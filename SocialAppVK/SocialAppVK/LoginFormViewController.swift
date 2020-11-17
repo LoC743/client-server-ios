@@ -7,6 +7,17 @@
 
 import UIKit
 
+// MARK: - Singleton Session
+class Session {
+    static let instance = Session()
+    
+    private init() {  }
+    
+    var token: String = ""  // Токен VK
+    var userID: Int = -1    // Идентификатор пользователя VK
+}
+
+
 class LoginFormViewController: UIViewController {
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var emailPhoneTextField: UITextField!
