@@ -32,7 +32,7 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
         resetSearchTableViewData()
         
         // MARK: - Запрос на получение списка друзей
-        NetworkManager.shared.loadFriendList(count: 1, offset: 0) { json in
+        NetworkManager.shared.loadFriendList(count: 3, offset: 0) { json in
             print("---------------FRIEND LIST---------------")
             if let json = json {
                 print(json)
