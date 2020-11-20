@@ -55,6 +55,7 @@ class NetworkManager {
             "user_ids": id,
             "access_token": token,
             "v": versionVKAPI,
+            "order": "hints",
             "fields": "sex, bdate, city, country, home_town, has_photo, photo_50, photo_100, photo_200_orig, photo_200, photo_400_orig, photo_max, photo_max_orig"
         ]
         
