@@ -41,7 +41,8 @@ class NetworkManager {
         }
     }
     
-    func getUserDataBy(id: String) -> Request? {
+    @discardableResult
+    func getUserDataBy(id: String, completion: @escaping (Any?) -> Void) -> Request? {
         guard let token = UserSession.instance.token else { return nil }
         
         let path = Paths.userData.rawValue
@@ -56,7 +57,7 @@ class NetworkManager {
         let url = baseURL + path
         
         return Session.custom.request(url, parameters: parameters).responseJSON { response in
-            print(type(of: response.value))
+            completion(response.value)
         }
     }
 }

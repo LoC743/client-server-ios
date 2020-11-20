@@ -32,16 +32,21 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
         resetSearchTableViewData()
         
         // MARK: - Запрос на получение списка друзей
-        print("---------------FRIEND LIST---------------")
         NetworkManager.shared.loadFriendList() { json in
+            print("---------------FRIEND LIST---------------")
             if let json = json {
                 print(json)
             }
         }
         
         // MARK: - Запрос на получение данных(фото) пользователя по ID
-        print("---------------FRIEND LIST---------------")
-        NetworkManager.shared.getUserDataBy(id: "4046880")
+        
+        NetworkManager.shared.getUserDataBy(id: "4046880") { json in
+            print("---------------FRIEND USER DATA---------------")
+            if let json = json {
+                print(json)
+            }
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
