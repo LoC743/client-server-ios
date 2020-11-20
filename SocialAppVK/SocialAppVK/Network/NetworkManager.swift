@@ -23,7 +23,7 @@ class NetworkManager {
     }
     
     @discardableResult
-    func loadFriendList(completion: @escaping (Any?) -> Void) -> Request? {
+    func loadFriendList(count: Int, offset: Int, completion: @escaping (Any?) -> Void) -> Request? {
         guard let token = UserSession.instance.token,
               let userID = UserSession.instance.userID else { return nil }
         
@@ -33,7 +33,9 @@ class NetworkManager {
             "user_id": userID,
             "access_token": token,
             "v": versionVKAPI,
-            "fields": "city, sex"
+            "fields": "city, sex",
+            "count": count,
+            "offset": offset
         ]
         
         let url = baseURL + path
@@ -64,7 +66,7 @@ class NetworkManager {
     }
     
     @discardableResult
-    func loadGroupsList(completion: @escaping (Any?) -> Void) -> Request? {
+    func loadGroupsList(count: Int, offset: Int, completion: @escaping (Any?) -> Void) -> Request? {
         guard let token = UserSession.instance.token,
               let userID = UserSession.instance.userID else { return nil }
         
@@ -74,7 +76,9 @@ class NetworkManager {
             "user_id": userID,
             "access_token": token,
             "v": versionVKAPI,
-            "extended": 1
+            "extended": 1,
+            "count": count,
+            "offset": offset
         ]
         
         let url = baseURL + path
