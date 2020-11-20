@@ -8,8 +8,8 @@
 
 
 // MARK: - Singleton Session
-class Session {
-    static let instance = Session()
+class UserSession {
+    static let instance = UserSession()
     
     private init() {  }
     
