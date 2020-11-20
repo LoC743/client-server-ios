@@ -19,6 +19,7 @@ class NetworkManager {
         case friends = "friends.get"
         case userData = "users.get"
         case groups = "groups.get"
+        case searchGroups = "groups.search"
     }
     
     @discardableResult
@@ -74,6 +75,27 @@ class NetworkManager {
             "access_token": token,
             "v": versionVKAPI,
             "extended": 1
+        ]
+        
+        let url = baseURL + path
+        
+        return Session.custom.request(url, parameters: parameters).responseJSON { response in
+            completion(response.value)
+        }
+    }
+    
+    @discardableResult
+    func getGroupsBy(searchRequest: String, count: Int, offset: Int, completion: @escaping (Any?) -> Void) -> Request? {
+        guard let token = UserSession.instance.token else { return nil }
+        
+        let path = Paths.searchGroups.rawValue
+        
+        let parameters: Parameters = [
+            "access_token": token,
+            "v": versionVKAPI,
+            "q": searchRequest,
+            "count": count,
+            "offset": offset
         ]
         
         let url = baseURL + path
