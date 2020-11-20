@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -36,6 +36,7 @@
 		8AB781B72539C4F6007AE4B2 /* NewsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB781B62539C4F6007AE4B2 /* NewsTableViewController.swift */; };
 		8AB781BB2539C51A007AE4B2 /* NewsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB781B92539C51A007AE4B2 /* NewsTableViewCell.swift */; };
 		8AB781BC2539C51A007AE4B2 /* NewsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8AB781BA2539C51A007AE4B2 /* NewsTableViewCell.xib */; };
+		8AC50BE12567C47C00BB808C /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC50BE02567C47C00BB808C /* UserSession.swift */; };
 		8AF30355253D9D1D0085F4C8 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF30354253D9D1D0085F4C8 /* LoadingView.swift */; };
 /* End PBXBuildFile section */
 
@@ -72,6 +73,7 @@
 		8AB781B62539C4F6007AE4B2 /* NewsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableViewController.swift; sourceTree = "<group>"; };
 		8AB781B92539C51A007AE4B2 /* NewsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableViewCell.swift; sourceTree = "<group>"; };
 		8AB781BA2539C51A007AE4B2 /* NewsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewsTableViewCell.xib; sourceTree = "<group>"; };
+		8AC50BE02567C47C00BB808C /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
 		8AF30354253D9D1D0085F4C8 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		BF773627850D382E61E58CE5 /* Pods_SocialAppVK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SocialAppVK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -94,7 +96,6 @@
 				2EDDD767853DE5DBBB8864EE /* Pods-SocialAppVK.debug.xcconfig */,
 				32B623515055FA9D17DFE87B /* Pods-SocialAppVK.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -164,6 +165,7 @@
 				8AA99CEA252B54C600A05F86 /* GroupsTab */,
 				8A25FDBC25334F1900AF98F1 /* CustomTableViewCell */,
 				8A81F3C5254841D80093C4F7 /* NavigationController */,
+				8AC50BE02567C47C00BB808C /* UserSession.swift */,
 			);
 			path = SocialAppVK;
 			sourceTree = "<group>";
@@ -349,6 +351,7 @@
 				8AB781B72539C4F6007AE4B2 /* NewsTableViewController.swift in Sources */,
 				8A184F8725332D8B004A002E /* GroupSearchTableViewController.swift in Sources */,
 				8A25FDC12533616300AF98F1 /* Post.swift in Sources */,
+				8AC50BE12567C47C00BB808C /* UserSession.swift in Sources */,
 				8A9A173C25223748003E44BC /* AppDelegate.swift in Sources */,
 				8AA99CE1252B425500A05F86 /* FriendsCollectionViewController.swift in Sources */,
 				8A9A173E25223748003E44BC /* SceneDelegate.swift in Sources */,
