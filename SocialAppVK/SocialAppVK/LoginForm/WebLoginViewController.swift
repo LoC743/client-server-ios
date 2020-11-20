@@ -65,8 +65,6 @@ class WebLoginViewController: UIViewController, WKNavigationDelegate{
                 return dict
             }
         
-        print(params)
-        
         let token = params["access_token"]
         let userID = params["user_id"]
         
@@ -82,7 +80,6 @@ class WebLoginViewController: UIViewController, WKNavigationDelegate{
         } else {
             // TODO: - Do something if didn't get token
         }
-        
     }
     
     // MARK: - Move to TabBarController after success authorization

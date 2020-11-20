@@ -30,6 +30,18 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
         
         getUserData()
         resetSearchTableViewData()
+        
+        // MARK: - Запрос на получение списка друзей
+        print("---------------FRIEND LIST---------------")
+        NetworkManager.shared.loadFriendList() { json in
+            if let json = json {
+                print(json)
+            }
+        }
+        
+        // MARK: - Запрос на получение данных(фото) пользователя по ID
+        print("---------------FRIEND LIST---------------")
+        NetworkManager.shared.getUserDataBy(id: "4046880")
     }
     
     override func viewWillAppear(_ animated: Bool) {
