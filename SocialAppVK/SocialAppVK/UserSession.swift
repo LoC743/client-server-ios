@@ -13,6 +13,6 @@ class UserSession {
     
     private init() {  }
     
-    var token: String = ""  // Токен VK
-    var userID: Int = -1    // Идентификатор пользователя VK
+    var token: String? = nil  // Токен VK
+    var userID: Int? = nil    // Идентификатор пользователя VK
 }
