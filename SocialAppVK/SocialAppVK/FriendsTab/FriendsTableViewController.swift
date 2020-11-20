@@ -40,9 +40,16 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
         }
         
         // MARK: - Запрос на получение данных(фото) пользователя по ID
-        
         NetworkManager.shared.getUserDataBy(id: "4046880") { json in
             print("---------------FRIEND USER DATA---------------")
+            if let json = json {
+                print(json)
+            }
+        }
+        
+        // MARK: - Запрос на получение групп пользователя
+        NetworkManager.shared.loadGroupsList() { json in
+            print("---------------GROUPS LIST---------------")
             if let json = json {
                 print(json)
             }
