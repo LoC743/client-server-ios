@@ -3,10 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		771B90D9BB58BF164FE38927 /* Pods_SocialAppVK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF773627850D382E61E58CE5 /* Pods_SocialAppVK.framework */; };
 		8A184F8125332C02004A002E /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A184F7F25332C02004A002E /* CustomTableViewCell.swift */; };
 		8A184F8225332C02004A002E /* CustomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A184F8025332C02004A002E /* CustomTableViewCell.xib */; };
 		8A184F8725332D8B004A002E /* GroupSearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A184F8625332D8B004A002E /* GroupSearchTableViewController.swift */; };
@@ -35,10 +36,16 @@
 		8AB781B72539C4F6007AE4B2 /* NewsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB781B62539C4F6007AE4B2 /* NewsTableViewController.swift */; };
 		8AB781BB2539C51A007AE4B2 /* NewsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB781B92539C51A007AE4B2 /* NewsTableViewCell.swift */; };
 		8AB781BC2539C51A007AE4B2 /* NewsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8AB781BA2539C51A007AE4B2 /* NewsTableViewCell.xib */; };
+		8AC50BE12567C47C00BB808C /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC50BE02567C47C00BB808C /* UserSession.swift */; };
+		8AC50BE42567C4C700BB808C /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC50BE32567C4C700BB808C /* NetworkManager.swift */; };
+		8AC50BE82567C5C300BB808C /* CustomAlomafireSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC50BE72567C5C300BB808C /* CustomAlomafireSession.swift */; };
+		8AC50BED2567C7FB00BB808C /* WebLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC50BEC2567C7FB00BB808C /* WebLoginViewController.swift */; };
 		8AF30355253D9D1D0085F4C8 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF30354253D9D1D0085F4C8 /* LoadingView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2EDDD767853DE5DBBB8864EE /* Pods-SocialAppVK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SocialAppVK.debug.xcconfig"; path = "Target Support Files/Pods-SocialAppVK/Pods-SocialAppVK.debug.xcconfig"; sourceTree = "<group>"; };
+		32B623515055FA9D17DFE87B /* Pods-SocialAppVK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SocialAppVK.release.xcconfig"; path = "Target Support Files/Pods-SocialAppVK/Pods-SocialAppVK.release.xcconfig"; sourceTree = "<group>"; };
 		8A184F7F25332C02004A002E /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		8A184F8025332C02004A002E /* CustomTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTableViewCell.xib; sourceTree = "<group>"; };
 		8A184F8625332D8B004A002E /* GroupSearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSearchTableViewController.swift; sourceTree = "<group>"; };
@@ -69,7 +76,12 @@
 		8AB781B62539C4F6007AE4B2 /* NewsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableViewController.swift; sourceTree = "<group>"; };
 		8AB781B92539C51A007AE4B2 /* NewsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableViewCell.swift; sourceTree = "<group>"; };
 		8AB781BA2539C51A007AE4B2 /* NewsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewsTableViewCell.xib; sourceTree = "<group>"; };
+		8AC50BE02567C47C00BB808C /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
+		8AC50BE32567C4C700BB808C /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
+		8AC50BE72567C5C300BB808C /* CustomAlomafireSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlomafireSession.swift; sourceTree = "<group>"; };
+		8AC50BEC2567C7FB00BB808C /* WebLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebLoginViewController.swift; sourceTree = "<group>"; };
 		8AF30354253D9D1D0085F4C8 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		BF773627850D382E61E58CE5 /* Pods_SocialAppVK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SocialAppVK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,12 +89,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				771B90D9BB58BF164FE38927 /* Pods_SocialAppVK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3464272C96D1FC50CF27A362 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				2EDDD767853DE5DBBB8864EE /* Pods-SocialAppVK.debug.xcconfig */,
+				32B623515055FA9D17DFE87B /* Pods-SocialAppVK.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		8A25FDBC25334F1900AF98F1 /* CustomTableViewCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -117,6 +139,8 @@
 			children = (
 				8A9A173A25223748003E44BC /* SocialAppVK */,
 				8A9A173925223748003E44BC /* Products */,
+				3464272C96D1FC50CF27A362 /* Pods */,
+				C54816A8B3F49F0EFF78145F /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -135,8 +159,7 @@
 				8A9A173B25223748003E44BC /* AppDelegate.swift */,
 				8A9A173D25223748003E44BC /* SceneDelegate.swift */,
 				8A9A174125223748003E44BC /* Main.storyboard */,
-				8A9A175125223E94003E44BC /* LoginFormViewController.swift */,
-				8AF30354253D9D1D0085F4C8 /* LoadingView.swift */,
+				8AC50BEB2567C78D00BB808C /* LoginForm */,
 				8A9A17442522374E003E44BC /* Assets.xcassets */,
 				8A9A17462522374E003E44BC /* LaunchScreen.storyboard */,
 				8A9A17492522374E003E44BC /* Info.plist */,
@@ -147,6 +170,8 @@
 				8AA99CEA252B54C600A05F86 /* GroupsTab */,
 				8A25FDBC25334F1900AF98F1 /* CustomTableViewCell */,
 				8A81F3C5254841D80093C4F7 /* NavigationController */,
+				8AC50BE02567C47C00BB808C /* UserSession.swift */,
+				8AC50BE62567C55800BB808C /* Network */,
 			);
 			path = SocialAppVK;
 			sourceTree = "<group>";
@@ -192,6 +217,33 @@
 			path = NewsTab;
 			sourceTree = "<group>";
 		};
+		8AC50BE62567C55800BB808C /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				8AC50BE32567C4C700BB808C /* NetworkManager.swift */,
+				8AC50BE72567C5C300BB808C /* CustomAlomafireSession.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		8AC50BEB2567C78D00BB808C /* LoginForm */ = {
+			isa = PBXGroup;
+			children = (
+				8A9A175125223E94003E44BC /* LoginFormViewController.swift */,
+				8AF30354253D9D1D0085F4C8 /* LoadingView.swift */,
+				8AC50BEC2567C7FB00BB808C /* WebLoginViewController.swift */,
+			);
+			path = LoginForm;
+			sourceTree = "<group>";
+		};
+		C54816A8B3F49F0EFF78145F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BF773627850D382E61E58CE5 /* Pods_SocialAppVK.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -199,9 +251,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8A9A174C2522374E003E44BC /* Build configuration list for PBXNativeTarget "SocialAppVK" */;
 			buildPhases = (
+				2BBF88BAA6D75BF6B2CB2E47 /* [CP] Check Pods Manifest.lock */,
 				8A9A173425223748003E44BC /* Sources */,
 				8A9A173525223748003E44BC /* Frameworks */,
 				8A9A173625223748003E44BC /* Resources */,
+				79929E30846C94C64B6E9E5C /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -260,6 +314,48 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		2BBF88BAA6D75BF6B2CB2E47 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SocialAppVK-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		79929E30846C94C64B6E9E5C /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SocialAppVK/Pods-SocialAppVK-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SocialAppVK/Pods-SocialAppVK-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SocialAppVK/Pods-SocialAppVK-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		8A9A173425223748003E44BC /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -267,6 +363,8 @@
 			files = (
 				8A9A175225223E94003E44BC /* LoginFormViewController.swift in Sources */,
 				8AA99CDB252B2C1D00A05F86 /* Colors.swift in Sources */,
+				8AC50BE82567C5C300BB808C /* CustomAlomafireSession.swift in Sources */,
+				8AC50BED2567C7FB00BB808C /* WebLoginViewController.swift in Sources */,
 				8A81F3C7254841F90093C4F7 /* PushAnimation.swift in Sources */,
 				8A81F3C3254841B80093C4F7 /* CustomInteractiveTransition.swift in Sources */,
 				8AB781BB2539C51A007AE4B2 /* NewsTableViewCell.swift in Sources */,
@@ -280,12 +378,14 @@
 				8AB781B72539C4F6007AE4B2 /* NewsTableViewController.swift in Sources */,
 				8A184F8725332D8B004A002E /* GroupSearchTableViewController.swift in Sources */,
 				8A25FDC12533616300AF98F1 /* Post.swift in Sources */,
+				8AC50BE12567C47C00BB808C /* UserSession.swift in Sources */,
 				8A9A173C25223748003E44BC /* AppDelegate.swift in Sources */,
 				8AA99CE1252B425500A05F86 /* FriendsCollectionViewController.swift in Sources */,
 				8A9A173E25223748003E44BC /* SceneDelegate.swift in Sources */,
 				8A81F3C0254841230093C4F7 /* CustomNavigationController.swift in Sources */,
 				8A184F8D25334458004A002E /* PostCollectionViewCell.swift in Sources */,
 				8AA99CCE252B1ED800A05F86 /* User.swift in Sources */,
+				8AC50BE42567C4C700BB808C /* NetworkManager.swift in Sources */,
 				8A81F3CA254842270093C4F7 /* PopAnimation.swift in Sources */,
 				8AF30355253D9D1D0085F4C8 /* LoadingView.swift in Sources */,
 			);
@@ -431,6 +531,7 @@
 		};
 		8A9A174D2522374E003E44BC /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2EDDD767853DE5DBBB8864EE /* Pods-SocialAppVK.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -449,6 +550,7 @@
 		};
 		8A9A174E2522374E003E44BC /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 32B623515055FA9D17DFE87B /* Pods-SocialAppVK.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
