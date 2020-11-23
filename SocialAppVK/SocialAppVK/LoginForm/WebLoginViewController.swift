@@ -74,8 +74,8 @@ class WebLoginViewController: UIViewController, WKNavigationDelegate{
         
         decisionHandler(.cancel)
         
-        if let _ = UserSession.instance.token,
-           let _ = UserSession.instance.userID {
+        if UserSession.instance.token != nil,
+           UserSession.instance.userID != nil {
             moveToTabBarController()
         } else {
             // TODO: - Do something if didn't get token
