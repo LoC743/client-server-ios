@@ -53,26 +53,26 @@ class NetworkManager {
         }
     }
     
-    @discardableResult
-    func getUserDataBy(id: String, completion: @escaping (Any?) -> Void) -> Request? {
-        guard let token = UserSession.instance.token else { return nil }
-        
-        let path = Paths.userData.rawValue
-        
-        let parameters: Parameters = [
-            "user_ids": id,
-            "access_token": token,
-            "v": versionVKAPI,
-            "order": "hints",
-            "fields": "sex, bdate, city, country, home_town, has_photo, photo_50, photo_100, photo_200"
-        ]
-        
-        let url = baseURL + path
-        
-        return Session.custom.request(url, parameters: parameters).responseJSON { response in
-            completion(response.value)
-        }
-    }
+//    @discardableResult
+//    func getUserDataBy(id: String, completion: @escaping (Any?) -> Void) -> Request? {
+//        guard let token = UserSession.instance.token else { return nil }
+//
+//        let path = Paths.userData.rawValue
+//
+//        let parameters: Parameters = [
+//            "user_ids": id,
+//            "access_token": token,
+//            "v": versionVKAPI,
+//            "order": "hints",
+//            "fields": "sex, bdate, city, country, home_town, has_photo, photo_50, photo_100, photo_200"
+//        ]
+//
+//        let url = baseURL + path
+//
+//        return Session.custom.request(url, parameters: parameters).responseJSON { response in
+//            completion(response.value)
+//        }
+//    }
     
     @discardableResult
     func loadGroupsList(count: Int, offset: Int, completion: @escaping (GroupList) -> Void) -> Request? {
@@ -105,7 +105,7 @@ class NetworkManager {
     }
     
     @discardableResult
-    func getGroupsBy(searchRequest: String, count: Int, offset: Int, completion: @escaping (Any?) -> Void) -> Request? {
+    func getGroupsBy(searchRequest: String, count: Int, offset: Int, completion: @escaping (GroupList) -> Void) -> Request? {
         guard let token = UserSession.instance.token else { return nil }
         
         let path = Paths.searchGroups.rawValue
@@ -120,8 +120,15 @@ class NetworkManager {
         
         let url = baseURL + path
         
-        return Session.custom.request(url, parameters: parameters).responseJSON { response in
-            completion(response.value)
+        return Session.custom.request(url, parameters: parameters).responseData { response in
+            guard let data = response.value,
+                  let groupList = try? JSONDecoder().decode(GroupList.self, from: data)
+            else {
+                print("Failed to pase group JSON!")
+                return
+            }
+            
+            completion(groupList)
         }
     }
 }

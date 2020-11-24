@@ -44,11 +44,9 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
         }
         
         // MARK: - Запрос на получение групп по заданной строке
-        NetworkManager.shared.getGroupsBy(searchRequest: "Mail", count: 5, offset: 0) { json in
+        NetworkManager.shared.getGroupsBy(searchRequest: "Mail", count: 5, offset: 0) { groupsList in
 //            print("---------------SEARCH GROUPS LIST---------------")
-            if let json = json {
-//                print(json)
-            }
+//            print(groupsList.groups)
         }
     }
     
