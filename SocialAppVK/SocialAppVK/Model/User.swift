@@ -8,8 +8,8 @@
 import UIKit
 
 protocol CellModel {
-    var name: String { get set }
-    var photo: Photo { get set }
+    var name: String { get }
+    var photo: Photo { get }
 }
 
 enum Sex: Int {
@@ -18,19 +18,25 @@ enum Sex: Int {
     case empty = -1
 }
 
-struct City {
-    var id: Int
-    var title: String
-}
+//struct City {
+//    var id: Int
+//    var title: String
+//}
 
-struct User {
+struct User: CellModel {
     var id: Int
     var firstName: String
     var lastName: String
     var sex: Sex
-    var city: City
+//    var city: City?
     var hasPhoto: Bool
     var photo: Photo
+    
+    var name: String {
+        get {
+            return "\(firstName) \(lastName)"
+        }
+    }
 }
 
 class FriendList: Decodable {
@@ -51,7 +57,7 @@ class FriendList: Decodable {
         case firstName = "first_name"
         case lastName = "last_name"
         case sex
-        case city
+//        case city
         case hasPhoto = "has_photo"
         case photo50 = "photo_50"
         case photo100 = "photo_100"
@@ -85,14 +91,15 @@ class FriendList: Decodable {
             let photo100 = try friendContainer.decode(String.self, forKey: .photo100)
             let photo200 = try friendContainer.decode(String.self, forKey: .photo200)
             
-            let cityContainer = try friendContainer.nestedContainer(keyedBy: CityCodingKeys.self, forKey: .city)
-            let cityID = try cityContainer.decode(Int.self, forKey: .id)
-            let cityTitle = try cityContainer.decode(String.self, forKey: .title)
+//            let cityContainer = try friendContainer.nestedContainer(keyedBy: CityCodingKeys.self, forKey: .city)
+//            let cityID = try cityContainer.decode(Int.self, forKey: .id)
+//            let cityTitle = try cityContainer.decode(String.self, forKey: .title)
 
             let photo = Photo(photo_50: photo50, photo_100: photo100, photo_200: photo200)
-            let city = City(id: cityID, title: cityTitle)
+//            let city = City(id: cityID, title: cityTitle)
             let sex = Sex(rawValue: sexInt) ?? .empty
-            let friend = User(id: id, firstName: firstName, lastName: lastName, sex: sex, city: city, hasPhoto: hasPhotoBool, photo: photo)
+//            let friend = User(id: id, firstName: firstName, lastName: lastName, sex: sex, city: city, hasPhoto: hasPhotoBool, photo: photo)
+            let friend = User(id: id, firstName: firstName, lastName: lastName, sex: sex, hasPhoto: hasPhotoBool, photo: photo)
             
             self.friends.append(friend)
         }
