@@ -70,8 +70,6 @@ class NetworkManager {
         ]
 
         let url = baseURL + path
-        print(url)
-        print(parameters)
 
         return Session.custom.request(url, parameters: parameters).responseData { response in
             guard let data = response.value,
@@ -141,5 +139,12 @@ class NetworkManager {
             
             completion(groupList)
         }
+    }
+    
+    func loadImageFrom(url: String) -> Data? {
+        guard let url = URL(string: url) else { return nil }
+        
+        let data = try? Data(contentsOf: url)
+        return data
     }
 }

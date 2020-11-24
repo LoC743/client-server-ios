@@ -8,9 +8,8 @@
 import UIKit
 
 protocol CellModel {
-    var image: UIImage { get set }
     var name: String { get set }
-    var isAdded: Bool  { get set }
+    var photo: Photo { get set }
 }
 
 enum Sex: Int {

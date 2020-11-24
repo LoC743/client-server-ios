@@ -23,14 +23,17 @@ class GroupsTableViewController: UITableViewController {
         tableView.register(UINib(nibName: "CustomTableViewCell", bundle: nil), forCellReuseIdentifier: "CustomTableViewCell")
         
         view.backgroundColor = Colors.palePurplePantone
+        
+        loadGroupList()
     }
     
     private func loadGroupList() {
-        NetworkManager.shared.loadGroupsList(count: 4, offset: 0) { [weak self] groupsList in
+        NetworkManager.shared.loadGroupsList(count: 0, offset: 0) { [weak self] groupsList in
             DispatchQueue.main.async {
                 guard let self = self,
-                      if let groupsList = groupsList else { return }
+                      let groupsList = groupsList else { return }
                 self.userGroups = groupsList.groups
+                self.tableView.reloadData()
             }
         }
     }
@@ -42,7 +45,7 @@ class GroupsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return addedGroups.count
+        return userGroups.count
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -52,7 +55,7 @@ class GroupsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CustomTableViewCell", for: indexPath) as! CustomTableViewCell
         
-//        cell.setValues(item: addedGroups[indexPath.row])
+        cell.setValues(item: userGroups[indexPath.row])
 
         return cell
     }
@@ -64,10 +67,10 @@ class GroupsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             
-            let id = addedGroups[indexPath.row].id
+//            let id = userGroups[indexPath.row].id
 //            Group.changeGroupAdded(by: id)
             
-            tableView.deleteRows(at: [indexPath], with: .fade)
+//            tableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
     

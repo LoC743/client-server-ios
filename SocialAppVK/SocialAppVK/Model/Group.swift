@@ -57,7 +57,7 @@ class GroupList: Decodable {
     }
 }
 
-struct Group {
+struct Group: CellModel {
     var id: Int
     var isMember: Bool
     var name: String

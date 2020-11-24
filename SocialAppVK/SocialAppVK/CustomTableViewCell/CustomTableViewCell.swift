@@ -20,7 +20,17 @@ class CustomTableViewCell: UITableViewCell {
     }
     
     func setValues(item: CellModel) {
-        avatarView.setImage(item.image)
+        let imageData = NetworkManager.shared.loadImageFrom(url: item.photo.photo_100)
+        if let imageData = imageData,
+           let image = UIImage(data: imageData) {
+            avatarView.setImage(image)
+        } else {
+            if let image = UIImage(named: "default-profile") {
+                avatarView.setImage(image)
+            }
+        }
+        
+        
         nameLabel.text = item.name
     }
     
