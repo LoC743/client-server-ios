@@ -48,6 +48,12 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
 //            print("---------------SEARCH GROUPS LIST---------------")
 //            print(groupsList.groups)
         }
+        
+        // MARK: - Запрос на получение фоток
+        NetworkManager.shared.getPhotos(ownerID: "-72495085", count: 1, offset: 0) { imagesList in
+//            print("---------------SEARCH GROUPS LIST---------------")
+//            print(imagesList.images)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

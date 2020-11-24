@@ -9,12 +9,7 @@ import UIKit
 
 class GroupsTableViewController: UITableViewController {
     
-    var addedGroups: [Group] {
-        get {
-            return []
-//            return Group.database.filter { $0.isAdded == true }
-        }
-    }
+    var userGroups: [Group] = []
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -28,6 +23,16 @@ class GroupsTableViewController: UITableViewController {
         tableView.register(UINib(nibName: "CustomTableViewCell", bundle: nil), forCellReuseIdentifier: "CustomTableViewCell")
         
         view.backgroundColor = Colors.palePurplePantone
+    }
+    
+    private func loadGroupList() {
+        NetworkManager.shared.loadGroupsList(count: 4, offset: 0) { [weak self] groupsList in
+            DispatchQueue.main.async {
+                guard let self = self,
+                      if let groupsList = groupsList else { return }
+                self.userGroups = groupsList.groups
+            }
+        }
     }
 
     // MARK: - Table view data source

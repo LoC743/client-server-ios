@@ -42,6 +42,7 @@
 		8AC50BED2567C7FB00BB808C /* WebLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC50BEC2567C7FB00BB808C /* WebLoginViewController.swift */; };
 		8AC50BFC256D0BFA00BB808C /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC50BFB256D0BFA00BB808C /* Photo.swift */; };
 		8AC50C00256D122E00BB808C /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC50BFF256D122E00BB808C /* Response.swift */; };
+		8AC50C03256D3C8E00BB808C /* ProfileImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC50C02256D3C8E00BB808C /* ProfileImages.swift */; };
 		8AF30355253D9D1D0085F4C8 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF30354253D9D1D0085F4C8 /* LoadingView.swift */; };
 /* End PBXBuildFile section */
 
@@ -84,6 +85,7 @@
 		8AC50BEC2567C7FB00BB808C /* WebLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebLoginViewController.swift; sourceTree = "<group>"; };
 		8AC50BFB256D0BFA00BB808C /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		8AC50BFF256D122E00BB808C /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		8AC50C02256D3C8E00BB808C /* ProfileImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImages.swift; sourceTree = "<group>"; };
 		8AF30354253D9D1D0085F4C8 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		BF773627850D382E61E58CE5 /* Pods_SocialAppVK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SocialAppVK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -189,6 +191,7 @@
 				8AA99CDA252B2C1D00A05F86 /* Colors.swift */,
 				8A25FDC02533616300AF98F1 /* Post.swift */,
 				8AC50BFF256D122E00BB808C /* Response.swift */,
+				8AC50C02256D3C8E00BB808C /* ProfileImages.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -388,6 +391,7 @@
 				8AC50BE12567C47C00BB808C /* UserSession.swift in Sources */,
 				8AC50C00256D122E00BB808C /* Response.swift in Sources */,
 				8A9A173C25223748003E44BC /* AppDelegate.swift in Sources */,
+				8AC50C03256D3C8E00BB808C /* ProfileImages.swift in Sources */,
 				8AA99CE1252B425500A05F86 /* FriendsCollectionViewController.swift in Sources */,
 				8A9A173E25223748003E44BC /* SceneDelegate.swift in Sources */,
 				8A81F3C0254841230093C4F7 /* CustomNavigationController.swift in Sources */,

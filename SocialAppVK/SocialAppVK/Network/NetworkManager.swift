@@ -17,13 +17,13 @@ class NetworkManager {
     
     enum Paths: String {
         case friends = "friends.get"
-        case userData = "users.get"
+        case photos = "photos.getAll"
         case groups = "groups.get"
         case searchGroups = "groups.search"
     }
     
     @discardableResult
-    func loadFriendList(count: Int, offset: Int, completion: @escaping (FriendList) -> Void) -> Request? {
+    func loadFriendList(count: Int, offset: Int, completion: @escaping (FriendList?) -> Void) -> Request? {
         guard let token = UserSession.instance.token,
               let userID = UserSession.instance.userID else { return nil }
         
@@ -53,29 +53,40 @@ class NetworkManager {
         }
     }
     
-//    @discardableResult
-//    func getUserDataBy(id: String, completion: @escaping (Any?) -> Void) -> Request? {
-//        guard let token = UserSession.instance.token else { return nil }
-//
-//        let path = Paths.userData.rawValue
-//
-//        let parameters: Parameters = [
-//            "user_ids": id,
-//            "access_token": token,
-//            "v": versionVKAPI,
-//            "order": "hints",
-//            "fields": "sex, bdate, city, country, home_town, has_photo, photo_50, photo_100, photo_200"
-//        ]
-//
-//        let url = baseURL + path
-//
-//        return Session.custom.request(url, parameters: parameters).responseJSON { response in
-//            completion(response.value)
-//        }
-//    }
+    @discardableResult
+    func getPhotos(ownerID: String, count: Int, offset: Int, completion: @escaping (ImageList?) -> Void) -> Request? {
+        guard let token = UserSession.instance.token else { return nil }
+
+        let path = Paths.photos.rawValue
+
+        let parameters: Parameters = [
+            "owner_id": ownerID,
+            "access_token": token,
+            "v": versionVKAPI,
+            "skip_hidden": true,
+            "count": count,
+            "offset": offset,
+            "extended": true
+        ]
+
+        let url = baseURL + path
+        print(url)
+        print(parameters)
+
+        return Session.custom.request(url, parameters: parameters).responseData { response in
+            guard let data = response.value,
+                  let images = try? JSONDecoder().decode(ImageList.self, from: data)
+            else {
+                print("Failed to pase images JSON!")
+                return
+            }
+            
+            completion(images)
+        }
+    }
     
     @discardableResult
-    func loadGroupsList(count: Int, offset: Int, completion: @escaping (GroupList) -> Void) -> Request? {
+    func loadGroupsList(count: Int, offset: Int, completion: @escaping (GroupList?) -> Void) -> Request? {
         guard let token = UserSession.instance.token,
               let userID = UserSession.instance.userID else { return nil }
         
@@ -105,7 +116,7 @@ class NetworkManager {
     }
     
     @discardableResult
-    func getGroupsBy(searchRequest: String, count: Int, offset: Int, completion: @escaping (GroupList) -> Void) -> Request? {
+    func getGroupsBy(searchRequest: String, count: Int, offset: Int, completion: @escaping (GroupList?) -> Void) -> Request? {
         guard let token = UserSession.instance.token else { return nil }
         
         let path = Paths.searchGroups.rawValue
