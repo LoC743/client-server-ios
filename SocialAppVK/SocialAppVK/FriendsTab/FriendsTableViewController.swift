@@ -33,33 +33,31 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
         
         // MARK: - Запрос на получение списка друзей
         NetworkManager.shared.loadFriendList(count: 3, offset: 0) { json in
-            print("---------------FRIEND LIST---------------")
+//            print("---------------FRIEND LIST---------------")
             if let json = json {
-                print(json)
+//                print(json)
             }
         }
         
         // MARK: - Запрос на получение данных(фото) пользователя по ID
         NetworkManager.shared.getUserDataBy(id: "4046880") { json in
-            print("---------------FRIEND USER DATA---------------")
+//            print("---------------FRIEND USER DATA---------------")
             if let json = json {
-                print(json)
+//                print(json)
             }
         }
         
         // MARK: - Запрос на получение групп пользователя
-        NetworkManager.shared.loadGroupsList(count: 4, offset: 0) { json in
-            print("---------------GROUPS LIST---------------")
-            if let json = json {
-                print(json)
-            }
+        NetworkManager.shared.loadGroupsList(count: 4, offset: 0) { groupsList in
+//            print("---------------GROUPS LIST---------------")
+//            print(groupsList.groups)
         }
         
         // MARK: - Запрос на получение групп по заданной строке
         NetworkManager.shared.getGroupsBy(searchRequest: "Mail", count: 5, offset: 0) { json in
-            print("---------------SEARCH GROUPS LIST---------------")
+//            print("---------------SEARCH GROUPS LIST---------------")
             if let json = json {
-                print(json)
+//                print(json)
             }
         }
     }

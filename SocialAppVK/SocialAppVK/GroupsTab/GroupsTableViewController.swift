@@ -11,7 +11,8 @@ class GroupsTableViewController: UITableViewController {
     
     var addedGroups: [Group] {
         get {
-            return Group.database.filter { $0.isAdded == true }
+            return []
+//            return Group.database.filter { $0.isAdded == true }
         }
     }
     
@@ -46,7 +47,7 @@ class GroupsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CustomTableViewCell", for: indexPath) as! CustomTableViewCell
         
-        cell.setValues(item: addedGroups[indexPath.row])
+//        cell.setValues(item: addedGroups[indexPath.row])
 
         return cell
     }
@@ -59,7 +60,7 @@ class GroupsTableViewController: UITableViewController {
         if editingStyle == .delete {
             
             let id = addedGroups[indexPath.row].id
-            Group.changeGroupAdded(by: id)
+//            Group.changeGroupAdded(by: id)
             
             tableView.deleteRows(at: [indexPath], with: .fade)
         }

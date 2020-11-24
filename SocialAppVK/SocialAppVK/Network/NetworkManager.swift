@@ -56,7 +56,7 @@ class NetworkManager {
             "access_token": token,
             "v": versionVKAPI,
             "order": "hints",
-            "fields": "sex, bdate, city, country, home_town, has_photo, photo_50, photo_100, photo_200_orig, photo_200, photo_400_orig, photo_max, photo_max_orig"
+            "fields": "sex, bdate, city, country, home_town, has_photo, photo_50, photo_100, photo_200"
         ]
         
         let url = baseURL + path
@@ -67,7 +67,7 @@ class NetworkManager {
     }
     
     @discardableResult
-    func loadGroupsList(count: Int, offset: Int, completion: @escaping (Any?) -> Void) -> Request? {
+    func loadGroupsList(count: Int, offset: Int, completion: @escaping (GroupList) -> Void) -> Request? {
         guard let token = UserSession.instance.token,
               let userID = UserSession.instance.userID else { return nil }
         
@@ -84,8 +84,15 @@ class NetworkManager {
         
         let url = baseURL + path
         
-        return Session.custom.request(url, parameters: parameters).responseJSON { response in
-            completion(response.value)
+        return Session.custom.request(url, parameters: parameters).responseData { response in
+            guard let data = response.value,
+                  let groupList = try? JSONDecoder().decode(GroupList.self, from: data)
+            else {
+                print("Failed to pase JSON!")
+                return
+            }
+            
+            completion(groupList)
         }
     }
     

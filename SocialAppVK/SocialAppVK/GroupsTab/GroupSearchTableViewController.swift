@@ -10,7 +10,8 @@ import UIKit
 class GroupSearchTableViewController: UITableViewController {
     var groups: [Group] {
         get {
-            return Group.database.filter { $0.isAdded == false }
+            return []
+//            return Group.database.filter { $0.isAdded == false }
         }
     }
 
@@ -39,14 +40,14 @@ class GroupSearchTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CustomTableViewCell", for: indexPath) as! CustomTableViewCell
         
-        cell.setValues(item: groups[indexPath.row])
+//        cell.setValues(item: groups[indexPath.row])
 
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let id = groups[indexPath.row].id
-        Group.changeGroupAdded(by: id)
+//        Group.changeGroupAdded(by: id)
         
         self.navigationController?.popViewController(animated: true)
     }
