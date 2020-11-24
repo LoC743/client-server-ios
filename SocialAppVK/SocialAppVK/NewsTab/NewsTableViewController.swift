@@ -25,7 +25,7 @@ class NewsTableViewController: UITableViewController {
     }
     
     private func getNews() {
-        var news: [PostModel] = []
+//        var news: [PostModel] = []
 //        for user in User.database {
 //            if user.isAdded {
 //                news += user.posts

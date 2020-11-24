@@ -110,10 +110,17 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
         let sectionLetter = searchSections[indexPath.section]
         let user = searchData[sectionLetter]![indexPath.row]
         
-//        vc.posts = user.posts
-        vc.title = user.name
-        
-        self.navigationController?.pushViewController(vc, animated: true)
+        NetworkManager.shared.getPhotos(ownerID: String(user.id), count: 30, offset: 0) { [weak self] imageList in
+            DispatchQueue.main.async {
+                guard let self = self,
+                      let imageList = imageList else { return }
+
+                vc.posts = imageList.images
+                vc.title = user.name
+                
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+        }
     }
     
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {

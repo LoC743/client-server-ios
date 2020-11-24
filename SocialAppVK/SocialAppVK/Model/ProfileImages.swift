@@ -7,19 +7,6 @@
 
 import UIKit
 
-// Описание типов: https://vk.com/dev/photo_sizes
-enum VKImageSize: String {
-    case m
-    case o
-    case p
-    case q
-    case r
-    case s
-    case x
-    case y
-    case z
-}
-
 struct Likes {
     var userLikes: Bool
     var count: Int
@@ -28,52 +15,28 @@ struct Likes {
 struct VKImage {
     var height: Int
     var width: Int
-    var type: VKImageSize
     var url: String
 }
 
-protocol Images {
-    var ownerID: Int { get set }
-    var albumID: Int { get set }
-    var id: Int { get set }
-    
-    var date: Int { get set }
-    var image: [VKImage] { get set }
-    var text: String { get set }
-    var likes: Likes { get set }
-    var reposts: Int { get set }
-}
-
-struct ProfileImage: Images {
+struct Image {
     var ownerID: Int
     var albumID: Int
     var id: Int
-    var postID: Int
     
     var date: Int
-    var image: [VKImage]
     var text: String
     var likes: Likes
     var reposts: Int
-}
-
-struct GroupImage: Images {
-    var ownerID: Int
-    var albumID: Int
-    var id: Int
-    var userID: Int
     
-    var date: Int
-    var image: [VKImage]
-    var text: String
-    var likes: Likes
-    var reposts: Int
-
+    var photo50: VKImage
+    var photo100: VKImage
+    var photo200: VKImage
 }
+
 
 class ImageList: Decodable {
     var amount: Int = 0
-    var images: [Images] = []
+    var images: [Image] = []
     
     enum ResponseCodingKeys: String, CodingKey {
         case response
@@ -145,8 +108,11 @@ class ImageList: Decodable {
             let repostsCount = try repostsContainer.decode(Int.self, forKey: .count)
             
             var imageSizeContainer = try imageContainer.nestedUnkeyedContainer(forKey: .sizes)
-            var vkImagesArray = [VKImage]()
             let sizesCount: Int = imageSizeContainer.count ?? 0
+            
+            var photo50: VKImage = VKImage(height: 0, width: 0, url: "")
+            var photo100: VKImage = VKImage(height: 0, width: 0, url: "")
+            var photo200: VKImage = VKImage(height: 0, width: 0, url: "")
             for _ in 0..<sizesCount {
                 let sizeContainer = try imageSizeContainer.nestedContainer(keyedBy: ImageSizeCodingKey.self)
                 let height = try sizeContainer.decode(Int.self, forKey: .height)
@@ -154,22 +120,20 @@ class ImageList: Decodable {
                 let url = try sizeContainer.decode(String.self, forKey: .url)
                 let typeString = try sizeContainer.decode(String.self, forKey: .type)
                 
-                let vkImage = VKImage(height: height, width: width, type: VKImageSize(rawValue: typeString) ?? .p, url: url)
-                vkImagesArray.append(vkImage)
+                switch typeString {
+                case "s":
+                    photo50 = VKImage(height: height, width: width, url: url)
+                case "m":
+                    photo100 = VKImage(height: height, width: width, url: url)
+                case "x":
+                    photo200 = VKImage(height: height, width: width, url: url)
+                default:
+                    break
+                }
             }
             
-            // Если > 0 то это пользователь, иначе группа
-            if ownerID > 0 {
-                let postID = try imageContainer.decode(Int.self, forKey: .postID)
-                
-                let userImage = ProfileImage(ownerID: ownerID, albumID: albumID, id: id, postID: postID, date: date, image: vkImagesArray, text: text, likes: likes, reposts: repostsCount)
-                images.append(userImage)
-            } else {
-                let userID = try imageContainer.decode(Int.self, forKey: .userID)
-                
-                let groupImages = GroupImage(ownerID: ownerID, albumID: albumID, id: id, userID: userID, date: date, image: vkImagesArray, text: text, likes: likes, reposts: repostsCount)
-                images.append(groupImages)
-            }
+            let userImage = Image(ownerID: ownerID, albumID: albumID, id: id, date: date, text: text, likes: likes, reposts: repostsCount, photo50: photo50, photo100: photo100, photo200: photo200)
+            images.append(userImage)
         }
     }
 }
