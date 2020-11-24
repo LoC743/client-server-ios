@@ -23,7 +23,7 @@ class NetworkManager {
     }
     
     @discardableResult
-    func loadFriendList(count: Int, offset: Int, completion: @escaping (Any?) -> Void) -> Request? {
+    func loadFriendList(count: Int, offset: Int, completion: @escaping (FriendList) -> Void) -> Request? {
         guard let token = UserSession.instance.token,
               let userID = UserSession.instance.userID else { return nil }
         
@@ -33,15 +33,23 @@ class NetworkManager {
             "user_id": userID,
             "access_token": token,
             "v": versionVKAPI,
-            "fields": "city, sex",
+            "fields": "bdate, city, sex, has_photo, photo_50, photo_100, photo_200",
             "count": count,
-            "offset": offset
+            "offset": offset,
+            "order": "hints"
         ]
         
         let url = baseURL + path
         
-        return Session.custom.request(url, parameters: parameters).responseJSON { response in
-            completion(response.value)
+        return Session.custom.request(url, parameters: parameters).responseData { response in
+            guard let data = response.value,
+                  let friendList = try? JSONDecoder().decode(FriendList.self, from: data)
+            else {
+                print("Failed to pase friend JSON!")
+                return
+            }
+            
+            completion(friendList)
         }
     }
     
@@ -88,7 +96,7 @@ class NetworkManager {
             guard let data = response.value,
                   let groupList = try? JSONDecoder().decode(GroupList.self, from: data)
             else {
-                print("Failed to pase JSON!")
+                print("Failed to pase group JSON!")
                 return
             }
             

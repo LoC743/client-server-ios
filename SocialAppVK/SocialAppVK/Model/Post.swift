@@ -48,13 +48,13 @@ struct Post: PostModel {
 
 // Временно
 func getUpdatedPost(id: Int) -> Post? {
-    for user in User.database {
-        for post in user.posts {
-            if post.id == id {
-                return post
-            }
-        }
-    }
+//    for user in User.database {
+//        for post in user.posts {
+//            if post.id == id {
+//                return post
+//            }
+//        }
+//    }
     return nil
 }
 

@@ -48,18 +48,18 @@ class PostCollectionViewCell: UICollectionViewCell {
     }
     
     private func changeLikeState() {
-        guard let post = post else { return }
-        
-        let userId = post.ownerId
-        let postId = post.id
-        
-        for i in 0..<User.database[userId].posts.count {
-            if postId == User.database[userId].posts[i].id {
-                User.database[userId].posts[i].changeLikeState()
-            }
-        }
-        
-        self.post?.changeLikeState()
+//        guard let post = post else { return }
+//
+//        let userId = post.ownerId
+//        let postId = post.id
+//
+//        for i in 0..<User.database[userId].posts.count {
+//            if postId == User.database[userId].posts[i].id {
+//                User.database[userId].posts[i].changeLikeState()
+//            }
+//        }
+//
+//        self.post?.changeLikeState()
     }
 
     @IBAction func likeButtonPressed(_ sender: UIButton) {

@@ -32,19 +32,9 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
         resetSearchTableViewData()
         
         // MARK: - Запрос на получение списка друзей
-        NetworkManager.shared.loadFriendList(count: 3, offset: 0) { json in
+        NetworkManager.shared.loadFriendList(count: 1, offset: 0) { friendList in
 //            print("---------------FRIEND LIST---------------")
-            if let json = json {
-//                print(json)
-            }
-        }
-        
-        // MARK: - Запрос на получение данных(фото) пользователя по ID
-        NetworkManager.shared.getUserDataBy(id: "4046880") { json in
-//            print("---------------FRIEND USER DATA---------------")
-            if let json = json {
-//                print(json)
-            }
+//            print(friendList.friends)
         }
         
         // MARK: - Запрос на получение групп пользователя
@@ -70,19 +60,19 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
     
     func getUserData() {
         userData = [:]
-        var sectionSet: Set<Character> = []
-        for user in User.database {
-            if let letter = user.name.first {
-                sectionSet.insert(letter)
-                
-                if userData[letter] == nil {
-                    userData[letter] = []
-                }
-                
-                userData[letter]?.append(user)
-            }
-        }
-        sections = sectionSet.sorted()
+//        var sectionSet: Set<Character> = []
+//        for user in User.database {
+//            if let letter = user.name.first {
+//                sectionSet.insert(letter)
+//
+//                if userData[letter] == nil {
+//                    userData[letter] = []
+//                }
+//
+//                userData[letter]?.append(user)
+//            }
+//        }
+//        sections = sectionSet.sorted()
     }
 
     // MARK: - Table view data source
@@ -108,7 +98,7 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
         let sectionLetter = searchSections[indexPath.section]
         let user = searchData[sectionLetter]![indexPath.row]
         
-        cell.setValues(item: user)
+//        cell.setValues(item: user)
 
         return cell
     }
@@ -123,8 +113,8 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
         let sectionLetter = searchSections[indexPath.section]
         let user = searchData[sectionLetter]![indexPath.row]
         
-        vc.posts = user.posts
-        vc.title = user.name
+//        vc.posts = user.posts
+//        vc.title = user.name
         
         self.navigationController?.pushViewController(vc, animated: true)
     }
@@ -178,26 +168,26 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
         searchData = [:]
         searchSections = []
         var sectionSearchSet: Set<Character> = []
-        
-        if searchText.isEmpty {
-            resetSearchTableViewData()
-        } else {
-            for section in sections {
-                let userArray = userData[section] ?? []
-                
-                for user in userArray {
-                    if user.name.lowercased().contains(searchText.lowercased()) {
-                        if searchData[section] == nil {
-                            searchData[section] = []
-                        }
-                        sectionSearchSet.insert(section)
-                        searchData[section]?.append(user)
-                    }
-                }
-            }
-            
-            searchSections = Array(sectionSearchSet).sorted()
-         }
+//
+//        if searchText.isEmpty {
+//            resetSearchTableViewData()
+//        } else {
+//            for section in sections {
+//                let userArray = userData[section] ?? []
+//
+//                for user in userArray {
+//                    if user.name.lowercased().contains(searchText.lowercased()) {
+//                        if searchData[section] == nil {
+//                            searchData[section] = []
+//                        }
+//                        sectionSearchSet.insert(section)
+//                        searchData[section]?.append(user)
+//                    }
+//                }
+//            }
+//
+//            searchSections = Array(sectionSearchSet).sorted()
+//         }
 
         self.tableView.reloadData()
     }
