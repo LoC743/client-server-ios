@@ -38,7 +38,7 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
 //        resetSearchTableViewData()
     }
     
-    func loadFriendList() {
+    private func loadFriendList() {
         NetworkManager.shared.loadFriendList(count: 0, offset: 0) { [weak self] friendList in
             DispatchQueue.main.async {
                 guard let self = self,
@@ -49,13 +49,13 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
         }
     }
     
-    func reloadTableData() {
+    private func reloadTableData() {
         getUserData()
         resetSearchTableViewData()
         self.tableView.reloadData()
     }
     
-    func getUserData() {
+    private func getUserData() {
         userData = [:]
         var sectionSet: Set<Character> = []
         for user in friendList {
@@ -110,7 +110,7 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
         let sectionLetter = searchSections[indexPath.section]
         let user = searchData[sectionLetter]![indexPath.row]
         
-        NetworkManager.shared.getPhotos(ownerID: String(user.id), count: 30, offset: 0) { [weak self] imageList in
+        NetworkManager.shared.getPhotos(ownerID: String(user.id), count: 30, offset: 0, type: .profile) { [weak self] imageList in
             DispatchQueue.main.async {
                 guard let self = self,
                       let imageList = imageList else { return }

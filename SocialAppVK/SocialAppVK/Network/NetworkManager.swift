@@ -7,6 +7,12 @@
 
 import Alamofire
 
+enum PhotoAlbum: String {
+    case wall
+    case profile
+    case saved
+}
+
 class NetworkManager {
     static let shared = NetworkManager()
     
@@ -54,7 +60,7 @@ class NetworkManager {
     }
     
     @discardableResult
-    func getPhotos(ownerID: String, count: Int, offset: Int, completion: @escaping (ImageList?) -> Void) -> Request? {
+    func getPhotos(ownerID: String, count: Int, offset: Int, type: PhotoAlbum, completion: @escaping (ImageList?) -> Void) -> Request? {
         guard let token = UserSession.instance.token else { return nil }
 
         let path = Paths.photos.rawValue
@@ -66,7 +72,8 @@ class NetworkManager {
             "skip_hidden": true,
             "count": count,
             "offset": offset,
-            "extended": true
+            "extended": true,
+            "album_id": type.rawValue
         ]
 
         let url = baseURL + path

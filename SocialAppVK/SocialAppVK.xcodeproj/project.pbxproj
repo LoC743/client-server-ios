@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		771B90D9BB58BF164FE38927 /* Pods_SocialAppVK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF773627850D382E61E58CE5 /* Pods_SocialAppVK.framework */; };
+		8A13AC9D256E5606000B6999 /* GroupsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A13AC9C256E5606000B6999 /* GroupsCollectionViewController.swift */; };
 		8A184F8125332C02004A002E /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A184F7F25332C02004A002E /* CustomTableViewCell.swift */; };
 		8A184F8225332C02004A002E /* CustomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A184F8025332C02004A002E /* CustomTableViewCell.xib */; };
 		8A184F8725332D8B004A002E /* GroupSearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A184F8625332D8B004A002E /* GroupSearchTableViewController.swift */; };
@@ -48,6 +49,7 @@
 /* Begin PBXFileReference section */
 		2EDDD767853DE5DBBB8864EE /* Pods-SocialAppVK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SocialAppVK.debug.xcconfig"; path = "Target Support Files/Pods-SocialAppVK/Pods-SocialAppVK.debug.xcconfig"; sourceTree = "<group>"; };
 		32B623515055FA9D17DFE87B /* Pods-SocialAppVK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SocialAppVK.release.xcconfig"; path = "Target Support Files/Pods-SocialAppVK/Pods-SocialAppVK.release.xcconfig"; sourceTree = "<group>"; };
+		8A13AC9C256E5606000B6999 /* GroupsCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupsCollectionViewController.swift; sourceTree = "<group>"; };
 		8A184F7F25332C02004A002E /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		8A184F8025332C02004A002E /* CustomTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomTableViewCell.xib; sourceTree = "<group>"; };
 		8A184F8625332D8B004A002E /* GroupSearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSearchTableViewController.swift; sourceTree = "<group>"; };
@@ -209,6 +211,7 @@
 			children = (
 				8AA99CD6252B200600A05F86 /* GroupsTableViewController.swift */,
 				8A184F8625332D8B004A002E /* GroupSearchTableViewController.swift */,
+				8A13AC9C256E5606000B6999 /* GroupsCollectionViewController.swift */,
 			);
 			path = GroupsTab;
 			sourceTree = "<group>";
@@ -393,6 +396,7 @@
 				8A81F3C0254841230093C4F7 /* CustomNavigationController.swift in Sources */,
 				8A184F8D25334458004A002E /* PostCollectionViewCell.swift in Sources */,
 				8AA99CCE252B1ED800A05F86 /* User.swift in Sources */,
+				8A13AC9D256E5606000B6999 /* GroupsCollectionViewController.swift in Sources */,
 				8AC50BE42567C4C700BB808C /* NetworkManager.swift in Sources */,
 				8A81F3CA254842270093C4F7 /* PopAnimation.swift in Sources */,
 				8AF30355253D9D1D0085F4C8 /* LoadingView.swift in Sources */,

@@ -61,7 +61,21 @@ class GroupsTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "GroupsCollectionViewController") as! GroupsCollectionViewController
+        
+        let group = userGroups[indexPath.row]
+        
+        NetworkManager.shared.getPhotos(ownerID: "-\(group.id)", count: 30, offset: 0, type: .wall) { [weak self] imageList in
+            DispatchQueue.main.async {
+                guard let self = self,
+                      let imageList = imageList else { return }
+
+                vc.posts = imageList.images
+                vc.title = group.name
+                
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+        }
     }
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
