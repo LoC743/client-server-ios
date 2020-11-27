@@ -15,6 +15,7 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
     var userData: [Character: [User]] = [:]    // Словарь для получения массива пользователей по букве секции
     var searchData: [Character: [User]] = [:]  // Такой же как и userData, только при использовании UISearchBar
     var searchSections: [Character] = []       // Такой же как и sections, используется при UISearchBar
+    var friendList: [User] = []
     
     private let reuseIdentifier = "CustomTableViewCell"
 
@@ -28,59 +29,43 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
         view.backgroundColor = Colors.palePurplePantone
         tableView.sectionIndexBackgroundColor = Colors.palePurplePantone
         
-        getUserData()
-        resetSearchTableViewData()
-        
-        // MARK: - Запрос на получение списка друзей
-        NetworkManager.shared.loadFriendList(count: 3, offset: 0) { json in
-            print("---------------FRIEND LIST---------------")
-            if let json = json {
-                print(json)
-            }
-        }
-        
-        // MARK: - Запрос на получение данных(фото) пользователя по ID
-        NetworkManager.shared.getUserDataBy(id: "4046880") { json in
-            print("---------------FRIEND USER DATA---------------")
-            if let json = json {
-                print(json)
-            }
-        }
-        
-        // MARK: - Запрос на получение групп пользователя
-        NetworkManager.shared.loadGroupsList(count: 4, offset: 0) { json in
-            print("---------------GROUPS LIST---------------")
-            if let json = json {
-                print(json)
-            }
-        }
-        
-        // MARK: - Запрос на получение групп по заданной строке
-        NetworkManager.shared.getGroupsBy(searchRequest: "Mail", count: 5, offset: 0) { json in
-            print("---------------SEARCH GROUPS LIST---------------")
-            if let json = json {
-                print(json)
-            }
-        }
+        loadFriendList()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        getUserData()
-        resetSearchTableViewData()
+//        getUserData()
+//        resetSearchTableViewData()
     }
     
-    func getUserData() {
+    private func loadFriendList() {
+        NetworkManager.shared.loadFriendList(count: 0, offset: 0) { [weak self] friendList in
+            DispatchQueue.main.async {
+                guard let self = self,
+                      let friendList = friendList else { return }
+                self.friendList = friendList.friends
+                self.reloadTableData()
+            }
+        }
+    }
+    
+    private func reloadTableData() {
+        getUserData()
+        resetSearchTableViewData()
+        self.tableView.reloadData()
+    }
+    
+    private func getUserData() {
         userData = [:]
         var sectionSet: Set<Character> = []
-        for user in User.database {
+        for user in friendList {
             if let letter = user.name.first {
                 sectionSet.insert(letter)
-                
+
                 if userData[letter] == nil {
                     userData[letter] = []
                 }
-                
+
                 userData[letter]?.append(user)
             }
         }
@@ -125,10 +110,17 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
         let sectionLetter = searchSections[indexPath.section]
         let user = searchData[sectionLetter]![indexPath.row]
         
-        vc.posts = user.posts
-        vc.title = user.name
-        
-        self.navigationController?.pushViewController(vc, animated: true)
+        NetworkManager.shared.getPhotos(ownerID: String(user.id), count: 30, offset: 0, type: .profile) { [weak self] imageList in
+            DispatchQueue.main.async {
+                guard let self = self,
+                      let imageList = imageList else { return }
+
+                vc.posts = imageList.images
+                vc.title = user.name
+                
+                self.navigationController?.pushViewController(vc, animated: true)
+            }
+        }
     }
     
     override func sectionIndexTitles(for tableView: UITableView) -> [String]? {
@@ -180,13 +172,13 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
         searchData = [:]
         searchSections = []
         var sectionSearchSet: Set<Character> = []
-        
+
         if searchText.isEmpty {
             resetSearchTableViewData()
         } else {
             for section in sections {
                 let userArray = userData[section] ?? []
-                
+
                 for user in userArray {
                     if user.name.lowercased().contains(searchText.lowercased()) {
                         if searchData[section] == nil {
@@ -197,7 +189,7 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
                     }
                 }
             }
-            
+
             searchSections = Array(sectionSearchSet).sorted()
          }
 

@@ -1,15 +1,13 @@
 //
-//  FriendsCollectionViewController.swift
+//  GroupsCollectionViewController.swift
 //  SocialAppVK
 //
-//  Created by Алексей Морозов on 05.10.2020.
+//  Created by Алексей Морозов on 25.11.2020.
 //
 
 import UIKit
 
-
-
-class FriendsCollectionViewController: UICollectionViewController {
+class GroupsCollectionViewController: UICollectionViewController {
     
     private let reuseIdentifier = "PostCollectionViewCell"
     
@@ -18,12 +16,12 @@ class FriendsCollectionViewController: UICollectionViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         collectionView.register(UINib(nibName: reuseIdentifier, bundle: nil), forCellWithReuseIdentifier: reuseIdentifier)
 
         view.backgroundColor = Colors.palePurplePantone
     }
-    
+
     private func loadEveryImage(completion: @escaping () -> Void) {
         for post in posts {
             let imageData = NetworkManager.shared.loadImageFrom(url: post.photo200.url)
@@ -66,4 +64,5 @@ class FriendsCollectionViewController: UICollectionViewController {
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
+
 }

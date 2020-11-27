@@ -25,13 +25,13 @@ class NewsTableViewController: UITableViewController {
     }
     
     private func getNews() {
-        var news: [PostModel] = []
-        for user in User.database {
-            if user.isAdded {
-                news += user.posts
-            }
-        }
-        newsArray = news
+//        var news: [PostModel] = []
+//        for user in User.database {
+//            if user.isAdded {
+//                news += user.posts
+//            }
+//        }
+//        newsArray = news
     }
 
     // MARK: - Table view data source

@@ -84,14 +84,14 @@ class NewsTableViewCell: UITableViewCell {
     }
     
     func setValues(item: PostModel) {
-        guard let user = User.getUser(by: item.ownerId) else { return }
+//        guard let user = User.getUser(by: item.ownerId) else { return }
         
         post = item as? Post
         
         guard let post = post else { return }
-
-        avatarImageView.image = user.image
-        nameLabel.text = user.name
+//
+//        avatarImageView.image = user.image
+//        nameLabel.text = user.name
         
         postDateLabel.text = getStringFromDate(post.date)
         postTextLabel.text = post.text
@@ -111,17 +111,17 @@ class NewsTableViewCell: UITableViewCell {
     }
     
     private func changeLikeState() {
-        guard let post = post else { return }
-        
-        let userId = post.ownerId
-        let postId = post.id
-        
-        for i in 0..<User.database[userId].posts.count {
-            if postId == User.database[userId].posts[i].id {
-                User.database[userId].posts[i].changeLikeState()
-            }
-        }
-        self.post?.changeLikeState()
+//        guard let post = post else { return }
+//
+//        let userId = post.ownerId
+//        let postId = post.id
+//
+//        for i in 0..<User.database[userId].posts.count {
+//            if postId == User.database[userId].posts[i].id {
+//                User.database[userId].posts[i].changeLikeState()
+//            }
+//        }
+//        self.post?.changeLikeState()
     }
     
     private func setNewLikeValueWithAnimation(post: Post) {

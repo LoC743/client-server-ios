@@ -7,6 +7,12 @@
 
 import Alamofire
 
+enum PhotoAlbum: String {
+    case wall
+    case profile
+    case saved
+}
+
 class NetworkManager {
     static let shared = NetworkManager()
     
@@ -17,13 +23,13 @@ class NetworkManager {
     
     enum Paths: String {
         case friends = "friends.get"
-        case userData = "users.get"
+        case photos = "photos.getAll"
         case groups = "groups.get"
         case searchGroups = "groups.search"
     }
     
     @discardableResult
-    func loadFriendList(count: Int, offset: Int, completion: @escaping (Any?) -> Void) -> Request? {
+    func loadFriendList(count: Int, offset: Int, completion: @escaping (FriendList?) -> Void) -> Request? {
         guard let token = UserSession.instance.token,
               let userID = UserSession.instance.userID else { return nil }
         
@@ -33,41 +39,59 @@ class NetworkManager {
             "user_id": userID,
             "access_token": token,
             "v": versionVKAPI,
-            "fields": "city, sex",
+            "fields": "bdate, city, sex, has_photo, photo_50, photo_100, photo_200",
             "count": count,
-            "offset": offset
+            "offset": offset,
+            "order": "hints"
         ]
         
         let url = baseURL + path
         
-        return Session.custom.request(url, parameters: parameters).responseJSON { response in
-            completion(response.value)
+        return Session.custom.request(url, parameters: parameters).responseData { response in
+            guard let data = response.value,
+                  let friendList = try? JSONDecoder().decode(FriendList.self, from: data)
+            else {
+                print("Failed to pase friend JSON!")
+                return
+            }
+            
+            completion(friendList)
         }
     }
     
     @discardableResult
-    func getUserDataBy(id: String, completion: @escaping (Any?) -> Void) -> Request? {
+    func getPhotos(ownerID: String, count: Int, offset: Int, type: PhotoAlbum, completion: @escaping (ImageList?) -> Void) -> Request? {
         guard let token = UserSession.instance.token else { return nil }
-        
-        let path = Paths.userData.rawValue
-        
+
+        let path = Paths.photos.rawValue
+
         let parameters: Parameters = [
-            "user_ids": id,
+            "owner_id": ownerID,
             "access_token": token,
             "v": versionVKAPI,
-            "order": "hints",
-            "fields": "sex, bdate, city, country, home_town, has_photo, photo_50, photo_100, photo_200_orig, photo_200, photo_400_orig, photo_max, photo_max_orig"
+            "skip_hidden": true,
+            "count": count,
+            "offset": offset,
+            "extended": true,
+            "album_id": type.rawValue
         ]
-        
+
         let url = baseURL + path
-        
-        return Session.custom.request(url, parameters: parameters).responseJSON { response in
-            completion(response.value)
+
+        return Session.custom.request(url, parameters: parameters).responseData { response in
+            guard let data = response.value,
+                  let images = try? JSONDecoder().decode(ImageList.self, from: data)
+            else {
+                print("Failed to pase images JSON!")
+                return
+            }
+            
+            completion(images)
         }
     }
     
     @discardableResult
-    func loadGroupsList(count: Int, offset: Int, completion: @escaping (Any?) -> Void) -> Request? {
+    func loadGroupsList(count: Int, offset: Int, completion: @escaping (GroupList?) -> Void) -> Request? {
         guard let token = UserSession.instance.token,
               let userID = UserSession.instance.userID else { return nil }
         
@@ -84,13 +108,20 @@ class NetworkManager {
         
         let url = baseURL + path
         
-        return Session.custom.request(url, parameters: parameters).responseJSON { response in
-            completion(response.value)
+        return Session.custom.request(url, parameters: parameters).responseData { response in
+            guard let data = response.value,
+                  let groupList = try? JSONDecoder().decode(GroupList.self, from: data)
+            else {
+                print("Failed to pase group JSON!")
+                return
+            }
+            
+            completion(groupList)
         }
     }
     
     @discardableResult
-    func getGroupsBy(searchRequest: String, count: Int, offset: Int, completion: @escaping (Any?) -> Void) -> Request? {
+    func getGroupsBy(searchRequest: String, count: Int, offset: Int, completion: @escaping (GroupList?) -> Void) -> Request? {
         guard let token = UserSession.instance.token else { return nil }
         
         let path = Paths.searchGroups.rawValue
@@ -105,8 +136,22 @@ class NetworkManager {
         
         let url = baseURL + path
         
-        return Session.custom.request(url, parameters: parameters).responseJSON { response in
-            completion(response.value)
+        return Session.custom.request(url, parameters: parameters).responseData { response in
+            guard let data = response.value,
+                  let groupList = try? JSONDecoder().decode(GroupList.self, from: data)
+            else {
+                print("Failed to pase group JSON!")
+                return
+            }
+            
+            completion(groupList)
         }
+    }
+    
+    func loadImageFrom(url: String) -> Data? {
+        guard let url = URL(string: url) else { return nil }
+        
+        let data = try? Data(contentsOf: url)
+        return data
     }
 }
