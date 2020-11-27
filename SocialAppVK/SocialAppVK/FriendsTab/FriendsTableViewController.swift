@@ -29,7 +29,7 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
         view.backgroundColor = Colors.palePurplePantone
         tableView.sectionIndexBackgroundColor = Colors.palePurplePantone
         
-        loadFriendList()
+        checkFriendListData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -38,12 +38,27 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
 //        resetSearchTableViewData()
     }
     
+    private func checkFriendListData() {
+        let friends = DatabaseManager.shared.loadUserData()
+        
+        guard friends.isEmpty else {
+            print("[Database]: Loading friend list..")
+            friendList = friends
+            reloadTableData()
+            return
+        }
+        
+        loadFriendList()
+    }
+    
     private func loadFriendList() {
+        print("[Network]: Loading friend list..")
         NetworkManager.shared.loadFriendList(count: 0, offset: 0) { [weak self] friendList in
             DispatchQueue.main.async {
                 guard let self = self,
                       let friendList = friendList else { return }
                 self.friendList = friendList.friends
+                DatabaseManager.shared.saveUserData(groups: friendList.friends) // Saving data from network to Realm
                 self.reloadTableData()
             }
         }

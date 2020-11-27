@@ -31,7 +31,7 @@ class GroupsTableViewController: UITableViewController {
         let savedGroupData = DatabaseManager.shared.loadGroupData()
         
         guard savedGroupData.isEmpty else {
-            print("[Database]: Loading Data..")
+            print("[Database]: Loading group data..")
             self.userGroups = savedGroupData
             self.tableView.reloadData()
             return
@@ -41,7 +41,7 @@ class GroupsTableViewController: UITableViewController {
     }
     
     private func loadGroupList() {
-        print("[Network]: Loading Data..")
+        print("[Network]: Loading group data..")
         NetworkManager.shared.loadGroupsList(count: 0, offset: 0) { [weak self] groupsList in
             DispatchQueue.main.async {
                 guard let self = self,
