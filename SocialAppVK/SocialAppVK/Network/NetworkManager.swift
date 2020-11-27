@@ -23,7 +23,7 @@ class NetworkManager {
     
     enum Paths: String {
         case friends = "friends.get"
-        case photos = "photos.getAll"
+        case photos = "photos.get"
         case groups = "groups.get"
         case searchGroups = "groups.search"
     }
@@ -66,14 +66,14 @@ class NetworkManager {
         let path = Paths.photos.rawValue
 
         let parameters: Parameters = [
+            "album_id": type.rawValue,
             "owner_id": ownerID,
             "access_token": token,
             "v": versionVKAPI,
-            "skip_hidden": true,
             "count": count,
             "offset": offset,
             "extended": true,
-            "album_id": type.rawValue
+            "rev": true
         ]
 
         let url = baseURL + path

@@ -9,7 +9,7 @@ import UIKit
 
 protocol CellModel {
     var name: String { get }
-    var photo: Photo { get }
+    var photo: Photo? { get }
 }
 
 enum Sex: Int {
@@ -30,7 +30,7 @@ struct User: CellModel {
     var sex: Sex
 //    var city: City?
     var hasPhoto: Bool
-    var photo: Photo
+    var photo: Photo?
     
     var name: String {
         get {
