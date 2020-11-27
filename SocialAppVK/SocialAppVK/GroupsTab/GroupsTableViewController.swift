@@ -24,15 +24,30 @@ class GroupsTableViewController: UITableViewController {
         
         view.backgroundColor = Colors.palePurplePantone
         
+        checkLoadedData()
+    }
+    
+    func checkLoadedData() {
+        let savedGroupData = DatabaseManager.shared.loadGroupData()
+        
+        guard savedGroupData.isEmpty else {
+            print("[Database]: Loading Data..")
+            self.userGroups = savedGroupData
+            self.tableView.reloadData()
+            return
+        }
+        
         loadGroupList()
     }
     
     private func loadGroupList() {
+        print("[Network]: Loading Data..")
         NetworkManager.shared.loadGroupsList(count: 0, offset: 0) { [weak self] groupsList in
             DispatchQueue.main.async {
                 guard let self = self,
                       let groupsList = groupsList else { return }
                 self.userGroups = groupsList.groups
+                DatabaseManager.shared.saveGroupData(groups: groupsList.groups) // Saving data from network to Realm
                 self.tableView.reloadData()
             }
         }
