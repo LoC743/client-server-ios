@@ -14,17 +14,20 @@ class Group: Object, CellModel {
     @objc dynamic var name: String = ""
     @objc dynamic var photo: Photo? = nil
     
+    @objc dynamic var orderNumber: Int = -1
+    
     override class func primaryKey() -> String? {
         return "id"
     }
     
-    convenience init(id: Int, isMember: Bool, name: String, photo: Photo) {
+    convenience init(id: Int, isMember: Bool, name: String, photo: Photo, order: Int) {
         self.init()
         
         self.id = id
         self.isMember = isMember
         self.name = name
         self.photo = photo
+        self.orderNumber = order
     }
 }
 
@@ -60,7 +63,7 @@ class GroupList: Decodable {
         var items = try values.nestedUnkeyedContainer(forKey: .items)
         
         let itemsCount: Int = items.count ?? 0
-        for _ in 0..<itemsCount {
+        for i in 0..<itemsCount {
             let groupContainer = try items.nestedContainer(keyedBy: GroupKeys.self)
             let id = try groupContainer.decode(Int.self, forKey: .id)
             let name = try groupContainer.decode(String.self, forKey: .name)
@@ -71,7 +74,7 @@ class GroupList: Decodable {
             let photo200 = try groupContainer.decode(String.self, forKey: .photo_200)
             
             let photo = Photo(photo_50: photo50, photo_100: photo100, photo_200: photo200)
-            let group = Group(id: id, isMember: isMemberBool, name: name, photo: photo)
+            let group = Group(id: id, isMember: isMemberBool, name: name, photo: photo, order: i)
             
             self.groups.append(group)
         }
