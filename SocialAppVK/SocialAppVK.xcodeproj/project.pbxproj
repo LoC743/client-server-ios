@@ -42,7 +42,7 @@
 		8AC50BE82567C5C300BB808C /* CustomAlomafireSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC50BE72567C5C300BB808C /* CustomAlomafireSession.swift */; };
 		8AC50BED2567C7FB00BB808C /* WebLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC50BEC2567C7FB00BB808C /* WebLoginViewController.swift */; };
 		8AC50BFC256D0BFA00BB808C /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC50BFB256D0BFA00BB808C /* Photo.swift */; };
-		8AC50C03256D3C8E00BB808C /* ProfileImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC50C02256D3C8E00BB808C /* ProfileImages.swift */; };
+		8AC50C03256D3C8E00BB808C /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC50C02256D3C8E00BB808C /* Images.swift */; };
 		8AC50C0B256DB8AD00BB808C /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC50C0A256DB8AD00BB808C /* Post.swift */; };
 		8AF30355253D9D1D0085F4C8 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF30354253D9D1D0085F4C8 /* LoadingView.swift */; };
 /* End PBXBuildFile section */
@@ -86,7 +86,7 @@
 		8AC50BE72567C5C300BB808C /* CustomAlomafireSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlomafireSession.swift; sourceTree = "<group>"; };
 		8AC50BEC2567C7FB00BB808C /* WebLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebLoginViewController.swift; sourceTree = "<group>"; };
 		8AC50BFB256D0BFA00BB808C /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
-		8AC50C02256D3C8E00BB808C /* ProfileImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImages.swift; sourceTree = "<group>"; };
+		8AC50C02256D3C8E00BB808C /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
 		8AC50C0A256DB8AD00BB808C /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		8AF30354253D9D1D0085F4C8 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		BF773627850D382E61E58CE5 /* Pods_SocialAppVK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SocialAppVK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -193,7 +193,7 @@
 				8AA99CD0252B1EDE00A05F86 /* Group.swift */,
 				8AC50C0A256DB8AD00BB808C /* Post.swift */,
 				8AA99CDA252B2C1D00A05F86 /* Colors.swift */,
-				8AC50C02256D3C8E00BB808C /* ProfileImages.swift */,
+				8AC50C02256D3C8E00BB808C /* Images.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -401,7 +401,7 @@
 				8A184F8725332D8B004A002E /* GroupSearchTableViewController.swift in Sources */,
 				8AC50BE12567C47C00BB808C /* UserSession.swift in Sources */,
 				8A9A173C25223748003E44BC /* AppDelegate.swift in Sources */,
-				8AC50C03256D3C8E00BB808C /* ProfileImages.swift in Sources */,
+				8AC50C03256D3C8E00BB808C /* Images.swift in Sources */,
 				8AA99CE1252B425500A05F86 /* FriendsCollectionViewController.swift in Sources */,
 				8A9A173E25223748003E44BC /* SceneDelegate.swift in Sources */,
 				8A81F3C0254841230093C4F7 /* CustomNavigationController.swift in Sources */,

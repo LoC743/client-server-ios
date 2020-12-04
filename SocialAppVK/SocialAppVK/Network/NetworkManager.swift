@@ -60,7 +60,7 @@ class NetworkManager {
     }
     
     @discardableResult
-    func getPhotos(ownerID: String, count: Int, offset: Int, type: PhotoAlbum, completion: @escaping (ImageList?) -> Void) -> Request? {
+    func getPhotos(ownerID: String, count: Int, offset: Int, type: PhotoAlbum, completion: @escaping (ImageList?) -> Void, failure: @escaping () -> Void) -> Request? {
         guard let token = UserSession.instance.token else { return nil }
 
         let path = Paths.photos.rawValue
@@ -82,6 +82,7 @@ class NetworkManager {
             guard let data = response.value,
                   let images = try? JSONDecoder().decode(ImageList.self, from: data)
             else {
+                failure()
                 print("Failed to pase images JSON!")
                 return
             }

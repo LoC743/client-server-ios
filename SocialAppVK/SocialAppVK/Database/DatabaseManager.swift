@@ -28,6 +28,12 @@ class DatabaseManager {
         }
     }
     
+    func saveImageData(images: [Image]) {
+        try? realm.write {
+            realm.add(images, update: .modified)
+        }
+    }
+    
     // MARK: - Loading data
     
     func loadGroupData() -> [Group] {
@@ -36,6 +42,10 @@ class DatabaseManager {
     
     func loadUserData() -> [User] {
         return Array(realm.objects(User.self))
+    }
+    
+    func loadImageDataBy(ownerID: Int) -> [Image] {
+        return Array(realm.objects(Image.self).filter("ownerID == %@", ownerID))
     }
     
     // MARK: - Remove all data
@@ -49,6 +59,13 @@ class DatabaseManager {
     
     func deleteUserData() {
         let result = realm.objects(User.self)
+        try? realm.write {
+            realm.delete(result)
+        }
+    }
+    
+    func deleteImageData() {
+        let result = realm.objects(Image.self)
         try? realm.write {
             realm.delete(result)
         }
