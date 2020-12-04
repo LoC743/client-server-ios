@@ -159,10 +159,11 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
                 self.loadingView.isHidden = true
             }
         } failure: { [weak self] in
-            
-            guard let self = self,
-                  let imageData = self.getDatabaseData(userID: user.id) else { return }
+            guard let self = self else { return }
             self.loadingView.isHidden = true
+            
+            guard let imageData = self.getDatabaseData(userID: user.id) else { return }
+            
             database(ImageList(images: imageData))
         }
     }

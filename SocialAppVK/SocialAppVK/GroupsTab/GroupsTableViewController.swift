@@ -113,14 +113,15 @@ class GroupsTableViewController: UITableViewController {
                 
                 DatabaseManager.shared.saveImageData(images: imageList.images)
                 
-                network(imageList)
                 self.loadingView.isHidden = true
+                network(imageList)
             }
         } failure: { [weak self] in
-            
-            guard let self = self,
-                  let imageData = self.getDatabaseData(groupID: groupID) else { return }
+            guard let self = self else { return }
             self.loadingView.isHidden = true
+            
+            guard let imageData = self.getDatabaseData(groupID: groupID) else { return }
+            
             database(ImageList(images: imageData))
         }
     }
