@@ -37,4 +37,20 @@ class DatabaseManager {
     func loadUserData() -> [User] {
         return Array(realm.objects(User.self))
     }
+    
+    // MARK: - Remove all data
+    
+    func deleteGroupData() {
+        let result = realm.objects(Group.self)
+        try? realm.write {
+            realm.delete(result)
+        }
+    }
+    
+    func deleteUserData() {
+        let result = realm.objects(User.self)
+        try? realm.write {
+            realm.delete(result)
+        }
+    }
 }

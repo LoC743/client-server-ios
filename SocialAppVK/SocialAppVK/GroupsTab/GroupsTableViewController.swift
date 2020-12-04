@@ -30,10 +30,14 @@ class GroupsTableViewController: UITableViewController {
     func checkLoadedData() {
         let savedGroupData = DatabaseManager.shared.loadGroupData()
         
+        // Show old data from DB
         guard savedGroupData.isEmpty else {
             print("[Database]: Loading group data..")
             self.userGroups = savedGroupData
             self.tableView.reloadData()
+            
+            loadGroupList() // Load new data
+            
             return
         }
         
@@ -46,6 +50,7 @@ class GroupsTableViewController: UITableViewController {
             DispatchQueue.main.async {
                 guard let self = self,
                       let groupsList = groupsList else { return }
+                DatabaseManager.shared.deleteGroupData() // Removing all group data before loading new data from network
                 self.userGroups = groupsList.groups
                 DatabaseManager.shared.saveGroupData(groups: groupsList.groups) // Saving data from network to Realm
                 self.tableView.reloadData()

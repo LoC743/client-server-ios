@@ -45,6 +45,9 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
             print("[Database]: Loading friend list..")
             friendList = friends
             reloadTableData()
+            
+            loadFriendList() // Load new data
+            
             return
         }
         
@@ -57,6 +60,7 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
             DispatchQueue.main.async {
                 guard let self = self,
                       let friendList = friendList else { return }
+                DatabaseManager.shared.deleteUserData() // Removing all user data before loading new data from network
                 self.friendList = friendList.friends
                 DatabaseManager.shared.saveUserData(groups: friendList.friends) // Saving data from network to Realm
                 self.reloadTableData()

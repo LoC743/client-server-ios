@@ -45,11 +45,13 @@ class User: Object, CellModel {
         }
     }
     
-    override init() {
-        super.init()
+    override class func primaryKey() -> String? {
+        return "id"
     }
     
-    init(id: Int, firstName: String, lastName: String, sex: Sex, hasPhoto: Bool, photo: Photo) {
+    convenience init(id: Int, firstName: String, lastName: String, sex: Sex, hasPhoto: Bool, photo: Photo) {
+        self.init()
+        
         self.id = id
         self.firstName = firstName
         self.lastName = lastName

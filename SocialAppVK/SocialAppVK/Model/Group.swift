@@ -14,11 +14,13 @@ class Group: Object, CellModel {
     @objc dynamic var name: String = ""
     @objc dynamic var photo: Photo? = nil
     
-    override init() {
-        super.init()
+    override class func primaryKey() -> String? {
+        return "id"
     }
     
-    init(id: Int, isMember: Bool, name: String, photo: Photo) {
+    convenience init(id: Int, isMember: Bool, name: String, photo: Photo) {
+        self.init()
+        
         self.id = id
         self.isMember = isMember
         self.name = name
