@@ -36,6 +36,7 @@
 		8AB781B72539C4F6007AE4B2 /* NewsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB781B62539C4F6007AE4B2 /* NewsTableViewController.swift */; };
 		8AB781BB2539C51A007AE4B2 /* NewsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AB781B92539C51A007AE4B2 /* NewsTableViewCell.swift */; };
 		8AB781BC2539C51A007AE4B2 /* NewsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8AB781BA2539C51A007AE4B2 /* NewsTableViewCell.xib */; };
+		8ABAE8F725711740008F11A4 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8ABAE8F625711740008F11A4 /* DatabaseManager.swift */; };
 		8AC50BE12567C47C00BB808C /* UserSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC50BE02567C47C00BB808C /* UserSession.swift */; };
 		8AC50BE42567C4C700BB808C /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC50BE32567C4C700BB808C /* NetworkManager.swift */; };
 		8AC50BE82567C5C300BB808C /* CustomAlomafireSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC50BE72567C5C300BB808C /* CustomAlomafireSession.swift */; };
@@ -79,6 +80,7 @@
 		8AB781B62539C4F6007AE4B2 /* NewsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableViewController.swift; sourceTree = "<group>"; };
 		8AB781B92539C51A007AE4B2 /* NewsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTableViewCell.swift; sourceTree = "<group>"; };
 		8AB781BA2539C51A007AE4B2 /* NewsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NewsTableViewCell.xib; sourceTree = "<group>"; };
+		8ABAE8F625711740008F11A4 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		8AC50BE02567C47C00BB808C /* UserSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSession.swift; sourceTree = "<group>"; };
 		8AC50BE32567C4C700BB808C /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		8AC50BE72567C5C300BB808C /* CustomAlomafireSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlomafireSession.swift; sourceTree = "<group>"; };
@@ -178,6 +180,7 @@
 				8A81F3C5254841D80093C4F7 /* NavigationController */,
 				8AC50BE02567C47C00BB808C /* UserSession.swift */,
 				8AC50BE62567C55800BB808C /* Network */,
+				8ABAE8F925711744008F11A4 /* Database */,
 			);
 			path = SocialAppVK;
 			sourceTree = "<group>";
@@ -224,6 +227,14 @@
 				8AB781BA2539C51A007AE4B2 /* NewsTableViewCell.xib */,
 			);
 			path = NewsTab;
+			sourceTree = "<group>";
+		};
+		8ABAE8F925711744008F11A4 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				8ABAE8F625711740008F11A4 /* DatabaseManager.swift */,
+			);
+			path = Database;
 			sourceTree = "<group>";
 		};
 		8AC50BE62567C55800BB808C /* Network */ = {
@@ -397,6 +408,7 @@
 				8A184F8D25334458004A002E /* PostCollectionViewCell.swift in Sources */,
 				8AA99CCE252B1ED800A05F86 /* User.swift in Sources */,
 				8A13AC9D256E5606000B6999 /* GroupsCollectionViewController.swift in Sources */,
+				8ABAE8F725711740008F11A4 /* DatabaseManager.swift in Sources */,
 				8AC50BE42567C4C700BB808C /* NetworkManager.swift in Sources */,
 				8A81F3CA254842270093C4F7 /* PopAnimation.swift in Sources */,
 				8AF30355253D9D1D0085F4C8 /* LoadingView.swift in Sources */,

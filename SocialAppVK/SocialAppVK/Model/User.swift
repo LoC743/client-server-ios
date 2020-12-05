@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import RealmSwift
 
 protocol CellModel {
     var name: String { get }
-    var photo: Photo { get }
+    var photo: Photo? { get }
 }
 
 enum Sex: Int {
@@ -23,19 +24,38 @@ enum Sex: Int {
 //    var title: String
 //}
 
-struct User: CellModel {
-    var id: Int
-    var firstName: String
-    var lastName: String
-    var sex: Sex
+class User: Object, CellModel {
+    @objc dynamic var id: Int = -1
+    @objc dynamic var firstName: String = ""
+    @objc dynamic var lastName: String = ""
+    @objc dynamic var gender: Int {
+        get {
+            return sex.rawValue
+        }
+    }
 //    var city: City?
-    var hasPhoto: Bool
-    var photo: Photo
+    @objc dynamic var hasPhoto: Bool = false
+    @objc dynamic var photo: Photo? = nil
+    
+    var sex: Sex = .empty
     
     var name: String {
         get {
             return "\(firstName) \(lastName)"
         }
+    }
+    
+    override init() {
+        super.init()
+    }
+    
+    init(id: Int, firstName: String, lastName: String, sex: Sex, hasPhoto: Bool, photo: Photo) {
+        self.id = id
+        self.firstName = firstName
+        self.lastName = lastName
+        self.sex = sex
+        self.hasPhoto = hasPhoto
+        self.photo = photo
     }
 }
 

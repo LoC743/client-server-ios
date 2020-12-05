@@ -6,6 +6,25 @@
 //
 
 import UIKit
+import RealmSwift
+
+class Group: Object, CellModel {
+    @objc dynamic var id: Int = -1
+    @objc dynamic var isMember: Bool = false
+    @objc dynamic var name: String = ""
+    @objc dynamic var photo: Photo? = nil
+    
+    override init() {
+        super.init()
+    }
+    
+    init(id: Int, isMember: Bool, name: String, photo: Photo) {
+        self.id = id
+        self.isMember = isMember
+        self.name = name
+        self.photo = photo
+    }
+}
 
 class GroupList: Decodable {
     var amount: Int = 0
@@ -55,11 +74,4 @@ class GroupList: Decodable {
             self.groups.append(group)
         }
     }
-}
-
-struct Group: CellModel {
-    var id: Int
-    var isMember: Bool
-    var name: String
-    var photo: Photo
 }
