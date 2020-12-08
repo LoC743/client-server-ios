@@ -9,7 +9,7 @@ import UIKit
 
 class PhotoViewerViewController: UIViewController {
     
-    var photos: [UIImage] = []
+    var photos: [Image] = []
     var currentIndex: Int = 0 {
         didSet {
             if self.currentIndex < 0 {
@@ -20,11 +20,12 @@ class PhotoViewerViewController: UIViewController {
         }
     }
     
-    var currentImage: UIImage? {
+    var currentImageURL: URL? {
         get {
-            guard photos.count > 0 else { return nil }
+            guard photos.count > 0,
+                  let image = photos[currentIndex].photo200 else { return nil }
             
-            return photos[currentIndex]
+            return URL(string: image.url)
         }
     }
     
@@ -122,10 +123,10 @@ class PhotoViewerViewController: UIViewController {
               currentIndex > -1,
               photos.count > currentIndex else { return }
         
-        currentImageView.image = currentImage
+        currentImageView.kf.setImage(with: currentImageURL)
     }
     
-    func getPhotosData(photos: [UIImage], currentIndex: Int) {
+    func getPhotosData(photos: [Image], currentIndex: Int) {
         self.photos = photos
         self.currentIndex = currentIndex
     }
@@ -190,16 +191,22 @@ class PhotoViewerViewController: UIViewController {
     
     private func setupAdditionalImageViews() {
         if currentIndex - 1 >= 0 {
+            guard let image = photos[currentIndex - 1].photo200 else { return }
+            
             leftImageView.isHidden = false
-            leftImageView.image = photos[currentIndex - 1]
+            let prevImageURL = URL(string: image.url)
+            leftImageView.kf.setImage(with: prevImageURL)
         } else {
             leftImageView.isHidden = true
             leftImageView.image = nil
         }
         
         if currentIndex + 1 != photos.count {
+            guard let image = photos[currentIndex + 1].photo200 else { return }
+            
             rightImageView.isHidden = false
-            rightImageView.image = photos[currentIndex + 1]
+            let nextImageURL = URL(string: image.url)
+            rightImageView.kf.setImage(with: nextImageURL)
         } else {
             rightImageView.isHidden = true
             rightImageView.image = nil
@@ -217,7 +224,7 @@ class PhotoViewerViewController: UIViewController {
             self.leftImageView.center = self.leftImageViewOldCenter
         } completion: { (_) in
             // Main ImageView
-            self.currentImageView.image = self.currentImage
+            self.currentImageView.kf.setImage(with: self.currentImageURL)
             self.currentImageView.center = self.currentImageViewOldCenter
             
             // Additional ImageView
@@ -238,7 +245,7 @@ class PhotoViewerViewController: UIViewController {
             self.rightImageView.center = self.rightImageViewOldCenter
         } completion: { (_) in
             // Main ImageView
-            self.currentImageView.image = self.currentImage
+            self.currentImageView.kf.setImage(with: self.currentImageURL)
             self.currentImageView.center = self.currentImageViewOldCenter
             
             // Additional ImageView

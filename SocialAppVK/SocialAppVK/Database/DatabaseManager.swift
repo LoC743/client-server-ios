@@ -28,13 +28,46 @@ class DatabaseManager {
         }
     }
     
+    func saveImageData(images: [Image]) {
+        try? realm.write {
+            realm.add(images, update: .modified)
+        }
+    }
+    
     // MARK: - Loading data
     
     func loadGroupData() -> [Group] {
-        return Array(realm.objects(Group.self))
+        return Array(realm.objects(Group.self).sorted(byKeyPath: "orderNumber"))
     }
     
     func loadUserData() -> [User] {
         return Array(realm.objects(User.self))
+    }
+    
+    func loadImageDataBy(ownerID: Int) -> [Image] {
+        return Array(realm.objects(Image.self).filter("ownerID == %@", ownerID).sorted(byKeyPath: "date", ascending: false))
+    }
+    
+    // MARK: - Remove all data
+    
+    func deleteGroupData() {
+        let result = realm.objects(Group.self)
+        try? realm.write {
+            realm.delete(result)
+        }
+    }
+    
+    func deleteUserData() {
+        let result = realm.objects(User.self)
+        try? realm.write {
+            realm.delete(result)
+        }
+    }
+    
+    func deleteImageData() {
+        let result = realm.objects(Image.self)
+        try? realm.write {
+            realm.delete(result)
+        }
     }
 }

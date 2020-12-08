@@ -6,31 +6,63 @@
 //
 
 import UIKit
+import RealmSwift
 
 struct Likes {
     var userLikes: Bool
     var count: Int
 }
 
-struct VKImage {
-    var height: Int
-    var width: Int
-    var url: String
+class VKImage: Object {
+    @objc dynamic var height: Int = 0
+    @objc dynamic var width: Int = 0
+    @objc dynamic var url: String = ""
+    
+    convenience init(url: String, height: Int, width: Int) {
+        self.init()
+        
+        self.url = url
+        self.height = height
+        self.width = width
+    }
+    
+    override class func primaryKey() -> String? {
+        return "url"
+    }
 }
 
-struct Image {
-    var ownerID: Int
-    var albumID: Int
-    var id: Int
+class Image: Object {
+    @objc dynamic var ownerID: Int = -1
+    @objc dynamic var albumID: Int = -1
+    @objc dynamic var id: Int = -1
     
-    var date: Int
-    var text: String
-    var likes: Likes
-    var reposts: Int
+    @objc dynamic var date: Int = -1
+    @objc dynamic var text: String = ""
+    var likes: Likes = .init(userLikes: false, count: -1)
+    var reposts: Int = -1
     
-    var photo50: VKImage
-    var photo100: VKImage
-    var photo200: VKImage
+    @objc dynamic var photo50: VKImage?
+    @objc dynamic var photo100: VKImage?
+    @objc dynamic var photo200: VKImage?
+    
+    convenience init(ownerID: Int, albumID: Int, id: Int, date: Int, text: String, likes: Likes, reposts: Int, photo50: VKImage, photo100: VKImage, photo200: VKImage) {
+        self.init()
+        
+        self.ownerID = ownerID
+        self.albumID = albumID
+        self.id = id
+        self.date = date
+        self.text = text
+        self.likes = likes
+        self.reposts = reposts
+        self.photo50 = photo50
+        self.photo100 = photo100
+        self.photo200 = photo200
+    }
+    
+    override class func primaryKey() -> String? {
+        return "id"
+    }
 }
 
 
@@ -110,9 +142,9 @@ class ImageList: Decodable {
             var imageSizeContainer = try imageContainer.nestedUnkeyedContainer(forKey: .sizes)
             let sizesCount: Int = imageSizeContainer.count ?? 0
             
-            var photo50: VKImage = VKImage(height: 0, width: 0, url: "")
-            var photo100: VKImage = VKImage(height: 0, width: 0, url: "")
-            var photo200: VKImage = VKImage(height: 0, width: 0, url: "")
+            var photo50: VKImage = VKImage()
+            var photo100: VKImage = VKImage()
+            var photo200: VKImage = VKImage()
             for _ in 0..<sizesCount {
                 let sizeContainer = try imageSizeContainer.nestedContainer(keyedBy: ImageSizeCodingKey.self)
                 let height = try sizeContainer.decode(Int.self, forKey: .height)
@@ -122,11 +154,11 @@ class ImageList: Decodable {
                 
                 switch typeString {
                 case "s":
-                    photo50 = VKImage(height: height, width: width, url: url)
+                    photo50 = VKImage(url: url, height: height, width: width)
                 case "m":
-                    photo100 = VKImage(height: height, width: width, url: url)
+                    photo100 = VKImage(url: url, height: height, width: width)
                 case "x":
-                    photo200 = VKImage(height: height, width: width, url: url)
+                    photo200 = VKImage(url: url, height: height, width: width)
                 default:
                     break
                 }
@@ -135,5 +167,11 @@ class ImageList: Decodable {
             let userImage = Image(ownerID: ownerID, albumID: albumID, id: id, date: date, text: text, likes: likes, reposts: repostsCount, photo50: photo50, photo100: photo100, photo200: photo200)
             images.append(userImage)
         }
+        
+    }
+    
+    init(images: [Image]) {
+        self.images = images
+        self.amount = images.count
     }
 }

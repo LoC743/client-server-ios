@@ -6,7 +6,7 @@
 | Работа с сетью                                            | :white_check_mark: |
 | Mapping JSON                                              | :white_check_mark: |
 | Хранение данных                                           | :mag:              |
-| Realm                                                     | :x:                |
+| Realm                                                     | :mag:              |
 | Backend - Firebase                                        | :x:                |
 | App Store, встроенные покупки                             | :x:                |
 

@@ -10,6 +10,8 @@ import Alamofire
 extension Session {
     static let custom: Session = {
         let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 5
+        
         let sessionManager = Session(configuration: configuration)
         
         return sessionManager

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 @IBDesignable class CustomAvatarView: UIView {
     
@@ -61,8 +62,18 @@ import UIKit
         self.addSubview(imageView)
     }
     
-    func setImage(_ image: UIImage) {
-        imageView.image = image
+    func setImage(_ url: URL) {
+        imageView.kf.setImage(with: url)
+        
+        if imageView.image == nil {
+            setDefaultImage()
+        }
+    }
+    
+    func setDefaultImage() {
+        if let image = UIImage(named: "default-profile") {
+            imageView.image = image
+        }
     }
 
 }

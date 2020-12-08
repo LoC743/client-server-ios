@@ -9,6 +9,10 @@ import UIKit
 
 class GroupsTableViewController: UITableViewController {
     
+    lazy var loadingView: UIView = {
+        return LoadingView(frame: CGRect(x: view.frame.minX, y: view.frame.minY, width: view.frame.maxX, height: view.frame.maxY))
+    }()
+    
     var userGroups: [Group] = []
     
     override func viewWillAppear(_ animated: Bool) {
@@ -20,6 +24,8 @@ class GroupsTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupLoadingView()
+        
         tableView.register(UINib(nibName: "CustomTableViewCell", bundle: nil), forCellReuseIdentifier: "CustomTableViewCell")
         
         view.backgroundColor = Colors.palePurplePantone
@@ -27,17 +33,22 @@ class GroupsTableViewController: UITableViewController {
         checkLoadedData()
     }
     
+    private func setupLoadingView() {
+        view.addSubview(loadingView)
+        loadingView.isHidden = true
+    }
+    
     func checkLoadedData() {
         let savedGroupData = DatabaseManager.shared.loadGroupData()
         
-        guard savedGroupData.isEmpty else {
+        // Show old data from DB
+        if !savedGroupData.isEmpty {
             print("[Database]: Loading group data..")
             self.userGroups = savedGroupData
             self.tableView.reloadData()
-            return
         }
         
-        loadGroupList()
+        loadGroupList() // Load new data anyways
     }
     
     private func loadGroupList() {
@@ -46,6 +57,7 @@ class GroupsTableViewController: UITableViewController {
             DispatchQueue.main.async {
                 guard let self = self,
                       let groupsList = groupsList else { return }
+                DatabaseManager.shared.deleteGroupData() // Removing all group data before loading new data from network
                 self.userGroups = groupsList.groups
                 DatabaseManager.shared.saveGroupData(groups: groupsList.groups) // Saving data from network to Realm
                 self.tableView.reloadData()
@@ -75,20 +87,63 @@ class GroupsTableViewController: UITableViewController {
         return cell
     }
     
+    private func getDatabaseData(groupID: Int) -> [Image]? {
+        let images = DatabaseManager.shared.loadImageDataBy(ownerID: groupID)
+        
+        guard images.isEmpty else {
+            print("[Database]: Returning Group Images..")
+            return images
+        }
+        
+        return nil
+    }
+    
+    private func loadImages(group: Group, network: @escaping (ImageList?) -> Void, database: @escaping (ImageList?) -> Void) {
+        print("[Network]: Loading Group Images..")
+        loadingView.isHidden = false
+        let groupID: Int = Int(-group.id)
+        NetworkManager.shared.getPhotos(ownerID: String(groupID), count: 30, offset: 0, type: .wall) { [weak self] imageList in
+            DispatchQueue.main.async {
+                guard let self = self,
+                      let imageList = imageList else { return }
+                
+                DatabaseManager.shared.saveImageData(images: imageList.images)
+                
+                self.loadingView.isHidden = true
+                network(imageList)
+            }
+        } failure: { [weak self] in
+            guard let self = self else { return }
+            self.loadingView.isHidden = true
+            
+            guard let imageData = self.getDatabaseData(groupID: groupID) else { return }
+            
+            database(ImageList(images: imageData))
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "GroupsCollectionViewController") as! GroupsCollectionViewController
         
         let group = userGroups[indexPath.row]
         
-        NetworkManager.shared.getPhotos(ownerID: "-\(group.id)", count: 30, offset: 0, type: .wall) { [weak self] imageList in
+        vc.title = group.name
+        
+        loadImages(group: group) { [weak self] (imageList) in
             DispatchQueue.main.async {
-                guard let self = self,
-                      let imageList = imageList else { return }
-
-                vc.posts = imageList.images
-                vc.title = group.name
-                
-                self.navigationController?.pushViewController(vc, animated: true)
+                if let self = self,
+                   let imageList = imageList {
+                    vc.posts = imageList.images
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
+            }
+        } database: { [weak self] (imageList) in
+            DispatchQueue.main.async {
+                if let self = self,
+                   let imageList = imageList {
+                    vc.posts = imageList.images
+                    self.navigationController?.pushViewController(vc, animated: true)
+                }
             }
         }
     }

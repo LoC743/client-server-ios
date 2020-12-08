@@ -18,22 +18,12 @@ class CustomTableViewCell: UITableViewCell {
         
         setupAvatarView()
     }
-    
-    private func setDefaultImage() {
-        if let image = UIImage(named: "default-profile") {
-            avatarView.setImage(image)
-        }
-    }
         
     func setValues(item: CellModel) {
-        if let photo = item.photo {
-            let imageData = NetworkManager.shared.loadImageFrom(url: photo.photo_100)
-            
-            if let imageData = imageData,
-               let image = UIImage(data: imageData) {
-                avatarView.setImage(image)
-            } else { setDefaultImage() }
-        }  else { setDefaultImage() }
+        if let photo = item.photo,
+           let url = URL(string: photo.photo_100) {
+            avatarView.setImage(url)
+        }  else { avatarView.setDefaultImage() }
         
         nameLabel.text = item.name
     }

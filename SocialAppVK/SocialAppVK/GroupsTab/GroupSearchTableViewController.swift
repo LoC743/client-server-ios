@@ -60,6 +60,8 @@ class GroupSearchTableViewController: UITableViewController, UISearchBarDelegate
                 
                 self.navigationController?.pushViewController(vc, animated: true)
             }
+        } failure: {
+            
         }
     }
     
