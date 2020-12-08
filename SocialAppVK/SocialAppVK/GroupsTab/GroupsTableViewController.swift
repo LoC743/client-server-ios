@@ -42,17 +42,13 @@ class GroupsTableViewController: UITableViewController {
         let savedGroupData = DatabaseManager.shared.loadGroupData()
         
         // Show old data from DB
-        guard savedGroupData.isEmpty else {
+        if !savedGroupData.isEmpty {
             print("[Database]: Loading group data..")
             self.userGroups = savedGroupData
             self.tableView.reloadData()
-            
-            loadGroupList() // Load new data
-            
-            return
         }
         
-        loadGroupList()
+        loadGroupList() // Load new data anyways
     }
     
     private func loadGroupList() {

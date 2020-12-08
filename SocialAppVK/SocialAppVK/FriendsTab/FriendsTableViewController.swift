@@ -52,17 +52,13 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
     private func checkFriendListData() {
         let friends = DatabaseManager.shared.loadUserData()
         
-        guard friends.isEmpty else {
+        if !friends.isEmpty {
             print("[Database]: Loading friend list..")
             friendList = friends
             reloadTableData()
-            
-            loadFriendList() // Load new data
-            
-            return
         }
         
-        loadFriendList()
+        loadFriendList() // Load new data anyways
     }
     
     private func loadFriendList() {
