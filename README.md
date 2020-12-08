@@ -5,8 +5,9 @@
 | Применение паттернов "наблюдатель", "одиночка", "делегат" | :white_check_mark: |
 | Работа с сетью                                            | :white_check_mark: |
 | Mapping JSON                                              | :white_check_mark: |
-| Хранение данных                                           | :mag:              |
-| Realm                                                     | :mag:              |
+| Хранение данных                                           | :white_check_mark: |
+| Realm                                                     | :white_check_mark: |
+| Realm Notifications                                       | :x:                |
 | Backend - Firebase                                        | :x:                |
 | App Store, встроенные покупки                             | :x:                |
 
