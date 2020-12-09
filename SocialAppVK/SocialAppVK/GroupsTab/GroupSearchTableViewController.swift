@@ -55,8 +55,8 @@ class GroupSearchTableViewController: UITableViewController, UISearchBarDelegate
                 guard let self = self,
                       let imageList = imageList else { return }
 
-                vc.posts = imageList.images
                 vc.title = group.name
+                vc.getImages(group: group)
                 
                 self.navigationController?.pushViewController(vc, animated: true)
             }

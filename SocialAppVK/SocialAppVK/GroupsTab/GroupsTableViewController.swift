@@ -64,7 +64,6 @@ class GroupsTableViewController: UITableViewController {
     }
     
     private func loadGroupList() {
-        print("[Network]: Loading group data..")
         NetworkManager.shared.loadGroupsList(count: 0, offset: 0) { groupsList in
             DispatchQueue.main.async {
                 guard let groupsList = groupsList else { return }
@@ -96,65 +95,15 @@ class GroupsTableViewController: UITableViewController {
         return cell
     }
     
-    private func getDatabaseData(groupID: Int) -> [Image]? {
-        let images = DatabaseManager.shared.loadImageDataBy(ownerID: groupID)
-        
-        guard images.isEmpty else {
-            print("[Database]: Returning Group Images..")
-            return images
-        }
-        
-        return nil
-    }
-    
-    private func loadImages(group: Group, network: @escaping (ImageList?) -> Void, database: @escaping (ImageList?) -> Void) {
-        print("[Network]: Loading Group Images..")
-        loadingView.isHidden = false
-        let groupID: Int = Int(-group.id)
-        NetworkManager.shared.getPhotos(ownerID: String(groupID), count: 30, offset: 0, type: .wall) { [weak self] imageList in
-            DispatchQueue.main.async {
-                guard let self = self,
-                      let imageList = imageList else { return }
-                
-                DatabaseManager.shared.saveImageData(images: imageList.images)
-                
-                self.loadingView.isHidden = true
-                network(imageList)
-            }
-        } failure: { [weak self] in
-            guard let self = self else { return }
-            self.loadingView.isHidden = true
-            
-            guard let imageData = self.getDatabaseData(groupID: groupID) else { return }
-            
-            database(ImageList(images: imageData))
-        }
-    }
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "GroupsCollectionViewController") as! GroupsCollectionViewController
         
         let group = groupsData[indexPath.row]
         
         vc.title = group.name
+        vc.getImages(group: group)
         
-        loadImages(group: group) { [weak self] (imageList) in
-            DispatchQueue.main.async {
-                if let self = self,
-                   let imageList = imageList {
-                    vc.posts = imageList.images
-                    self.navigationController?.pushViewController(vc, animated: true)
-                }
-            }
-        } database: { [weak self] (imageList) in
-            DispatchQueue.main.async {
-                if let self = self,
-                   let imageList = imageList {
-                    vc.posts = imageList.images
-                    self.navigationController?.pushViewController(vc, animated: true)
-                }
-            }
-        }
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {

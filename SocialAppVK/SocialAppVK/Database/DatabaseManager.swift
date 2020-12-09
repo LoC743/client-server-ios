@@ -44,8 +44,8 @@ class DatabaseManager {
         return realm.objects(User.self)
     }
     
-    func loadImageDataBy(ownerID: Int) -> [Image] {
-        return Array(realm.objects(Image.self).filter("ownerID == %@", ownerID).sorted(byKeyPath: "date", ascending: false))
+    func loadImageDataBy(ownerID: Int) -> Results<Image> {
+        return realm.objects(Image.self).filter("ownerID == %@", ownerID).sorted(byKeyPath: "date", ascending: false)
     }
     
     // MARK: - Remove all data
