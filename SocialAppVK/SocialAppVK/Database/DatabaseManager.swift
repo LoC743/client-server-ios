@@ -22,9 +22,9 @@ class DatabaseManager {
         }
     }
     
-    func saveUserData(groups: [User]) {
+    func saveUserData(users: [User]) {
         try? realm.write {
-            realm.add(groups)
+            realm.add(users)
         }
     }
     
@@ -40,8 +40,8 @@ class DatabaseManager {
         return realm.objects(Group.self).sorted(byKeyPath: "orderNumber")
     }
     
-    func loadUserData() -> [User] {
-        return Array(realm.objects(User.self))
+    func loadUserData() -> Results<User> {
+        return realm.objects(User.self)
     }
     
     func loadImageDataBy(ownerID: Int) -> [Image] {
