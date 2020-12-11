@@ -7,11 +7,13 @@
 
 import UIKit
 import RealmSwift
+import FirebaseFirestore
 
 class GroupsCollectionViewController: UICollectionViewController {
     
     private let reuseIdentifier = "PostCollectionViewCell"
     
+    var groupData: Group!
     var posts: Results<Image>!
     var token: NotificationToken?
 
@@ -21,6 +23,69 @@ class GroupsCollectionViewController: UICollectionViewController {
         collectionView.register(UINib(nibName: reuseIdentifier, bundle: nil), forCellWithReuseIdentifier: reuseIdentifier)
 
         view.backgroundColor = Colors.palePurplePantone
+        
+        setupAddButton()
+    }
+    
+    private func setupAddButton() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addButtonTapped))
+        
+        guard let userID = UserSession.instance.userID else { return }
+        let db = Firestore.firestore()
+        let groupsRef = db.collection("\(userID)-groups").document("\(groupData.id)")
+        
+        groupsRef.getDocument { [weak self] (document, error) in
+            guard let self = self else { return }
+            
+            if let document = document, document.exists {
+                self.navigationItem.rightBarButtonItem?.title = "Remove"
+            } else {
+                self.navigationItem.rightBarButtonItem?.title = "Add"
+            }
+        }
+    }
+    
+    private func removeGroupGromFirestore() {
+        guard let userID = UserSession.instance.userID else { return }
+        let db = Firestore.firestore()
+        
+        db.collection("\(userID)-groups").document("\(groupData.id)").delete() { err in
+            if let err = err {
+                print("[Firebase]: Error removing document: \(err)")
+            } else {
+                print("[Firebase]: Document successfully removed!")
+            }
+        }
+    }
+    
+    private func saveGroupToFirestore() {
+        guard let userID = UserSession.instance.userID else { return }
+        let db = Firestore.firestore()
+        
+        db.collection("\(userID)-groups").document("\(groupData.id)").setData(groupData.toFirestore(), merge: true)
+    }
+    
+    private func manageGroupInFirestore() {
+        guard let userID = UserSession.instance.userID else { return }
+        let db = Firestore.firestore()
+        let groupsRef = db.collection("\(userID)-groups").document("\(groupData.id)")
+        
+        groupsRef.getDocument { [weak self] (document, error) in
+            guard let self = self else { return }
+            
+            if let document = document, document.exists {
+                self.navigationItem.rightBarButtonItem?.title = "Add"
+                self.removeGroupGromFirestore()
+            } else {
+                self.navigationItem.rightBarButtonItem?.title = "Remove"
+                self.saveGroupToFirestore()
+            }
+        }
+    }
+    
+    
+    @objc func addButtonTapped() {
+        manageGroupInFirestore()
     }
 
     private func loadImages(group: Group, network: @escaping (ImageList?) -> Void) {
@@ -39,6 +104,7 @@ class GroupsCollectionViewController: UICollectionViewController {
     func getImages(group: Group) {
         let groupID: Int = Int(-group.id)
         
+        self.groupData = group
         self.posts = DatabaseManager.shared.loadImageDataBy(ownerID: groupID)
         self.token = posts.observe(on: DispatchQueue.main, { [weak self] (changes) in
             guard let self = self else { return }

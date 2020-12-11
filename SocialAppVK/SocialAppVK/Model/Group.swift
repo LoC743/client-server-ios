@@ -29,6 +29,15 @@ class Group: Object, CellModel {
         self.photo = photo
         self.orderNumber = order
     }
+    
+    func toFirestore() -> [String: Any] {
+        return [
+            "id": id,
+            "name": name,
+            "isMember": isMember,
+            "photo": photo?.photo_200 ?? ""
+        ]
+    }
 }
 
 class GroupList: Decodable {
