@@ -21,6 +21,7 @@
 		8A81F3C3254841B80093C4F7 /* CustomInteractiveTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A81F3C2254841B80093C4F7 /* CustomInteractiveTransition.swift */; };
 		8A81F3C7254841F90093C4F7 /* PushAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A81F3C6254841F90093C4F7 /* PushAnimation.swift */; };
 		8A81F3CA254842270093C4F7 /* PopAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A81F3C9254842270093C4F7 /* PopAnimation.swift */; };
+		8A82BD2725837778009E6C46 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8A82BD2625837778009E6C46 /* GoogleService-Info.plist */; };
 		8A9A173C25223748003E44BC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9A173B25223748003E44BC /* AppDelegate.swift */; };
 		8A9A173E25223748003E44BC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A9A173D25223748003E44BC /* SceneDelegate.swift */; };
 		8A9A174325223748003E44BC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 8A9A174125223748003E44BC /* Main.storyboard */; };
@@ -63,6 +64,7 @@
 		8A81F3C2254841B80093C4F7 /* CustomInteractiveTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomInteractiveTransition.swift; sourceTree = "<group>"; };
 		8A81F3C6254841F90093C4F7 /* PushAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushAnimation.swift; sourceTree = "<group>"; };
 		8A81F3C9254842270093C4F7 /* PopAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopAnimation.swift; sourceTree = "<group>"; };
+		8A82BD2625837778009E6C46 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		8A9A173825223748003E44BC /* SocialAppVK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SocialAppVK.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8A9A173B25223748003E44BC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		8A9A173D25223748003E44BC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -171,6 +173,7 @@
 				8A9A17442522374E003E44BC /* Assets.xcassets */,
 				8A9A17462522374E003E44BC /* LaunchScreen.storyboard */,
 				8A9A17492522374E003E44BC /* Info.plist */,
+				8A82BD2625837778009E6C46 /* GoogleService-Info.plist */,
 				8A3E6DAE2525E50B00766A2E /* TabBarController.swift */,
 				8A4C2AB625418DF000DE263F /* FullscreenPhotoViewer */,
 				8AB781A52539A39F007AE4B2 /* NewsTab */,
@@ -329,6 +332,7 @@
 				8AB781BC2539C51A007AE4B2 /* NewsTableViewCell.xib in Resources */,
 				8A9A174325223748003E44BC /* Main.storyboard in Resources */,
 				8A184F8E25334458004A002E /* PostCollectionViewCell.xib in Resources */,
+				8A82BD2725837778009E6C46 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
