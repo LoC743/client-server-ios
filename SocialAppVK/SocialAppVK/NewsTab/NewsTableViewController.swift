@@ -11,8 +11,9 @@ class NewsTableViewController: UITableViewController {
     
     private let reuseIdentifier = "NewsTableViewCell"
     
-    var newsArray: [PostModel] = []
-
+    var newsArray: [News] = []
+    var feed: Feed!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -20,18 +21,23 @@ class NewsTableViewController: UITableViewController {
         
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 600
-        
-        getNews()
     }
     
-    private func getNews() {
-//        var news: [PostModel] = []
-//        for user in User.database {
-//            if user.isAdded {
-//                news += user.posts
-//            }
-//        }
-//        newsArray = news
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        loadNews()
+    }
+    
+    private func loadNews() {
+        NetworkManager.shared.loadFeed(count: 3) { [weak self] (feedResponse) in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                self.newsArray = feedResponse.newsArray
+                self.feed = feedResponse
+                self.tableView.reloadData()
+            }
+        }
     }
 
     // MARK: - Table view data source
