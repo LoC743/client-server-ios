@@ -99,13 +99,14 @@ class NewsTableViewCell: UITableViewCell {
         postImageView.kf.setImage(with: url)
     }
     
-    func setValues(item: News) {
+    func setValues(item: News, group: Group) {
         self.post = item
-//        guard let user = User.getUser(by: item.ownerId) else { return }
-//        guard let post = post else { return }
-//
-//        avatarImageView.image = user.image
-//        nameLabel.text = user.name
+        
+        if let photo = group.photo,
+           let url = URL(string: photo.photo_100) {
+            avatarImageView.kf.setImage(with: url)
+        }
+        nameLabel.text = group.name
         
         postDateLabel.text = getStringFromDate(item.date)
         postTextLabel.text = item.text

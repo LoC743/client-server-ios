@@ -8,7 +8,7 @@
 import RealmSwift
 
 class News: Object {
-    @objc dynamic var id: Int = -1
+    @objc dynamic var sourceID: Int = -1
     @objc dynamic var text: String = ""
     @objc dynamic var date: Int = -1
     @objc dynamic var photoURL: String = ""
@@ -17,16 +17,11 @@ class News: Object {
     @objc dynamic var isUserLikes: Bool = false
     @objc dynamic var repostsCount: Int = -1
     @objc dynamic var viewsCount: Int = -1
-    @objc dynamic var owner: Int = -1
     
-    override class func primaryKey() -> String? {
-        return "id"
-    }
-    
-    convenience init(id: Int, text: String, date: Int, photoURL: String, commentCount: Int, likesCount: Int, isUserLikes: Bool, repostsCount: Int, viewsCount: Int, owner: Int) {
+    convenience init(sourceID: Int, text: String, date: Int, photoURL: String, commentCount: Int, likesCount: Int, isUserLikes: Bool, repostsCount: Int, viewsCount: Int) {
         self.init()
         
-        self.id = id
+        self.sourceID = sourceID
         self.text = text
         self.date = date
         self.photoURL = photoURL
@@ -35,12 +30,12 @@ class News: Object {
         self.isUserLikes = isUserLikes
         self.repostsCount = repostsCount
         self.viewsCount = viewsCount
-        self.owner = owner
     }
 }
 
 class Feed: Decodable {
     var newsArray: [News] = []
+    var groups: [Group] = []
     
     enum ResponseCodingKeys: String, CodingKey {
         case response
@@ -87,7 +82,6 @@ class Feed: Decodable {
     
     enum PhotoCodingKeys: String, CodingKey {
         case sizes
-        case ownerID = "owner_id"
     }
     
     enum SizesCodingKeys: String, CodingKey {
@@ -108,7 +102,26 @@ class Feed: Decodable {
         let items = try response.nestedContainer(keyedBy: ItemsCodingKeys.self, forKey: .response)
         
         var news = try items.nestedUnkeyedContainer(forKey: .items)
-//        let groups = try items.
+        var groups = try items.nestedUnkeyedContainer(forKey: .groups)
+        
+        let groupCount = groups.count ?? 0
+        
+        for q in 0..<groupCount {
+            let groupContainer = try groups.nestedContainer(keyedBy: GroupCodingKeys.self)
+            
+            let id = try groupContainer.decode(Int.self, forKey: .id)
+            let isMemberInt = try groupContainer.decode(Int.self, forKey: .isMember)
+            let isMemberBool = isMemberInt == 0 ? false : true
+            let name = try groupContainer.decode(String.self, forKey: .name)
+            let photo_50 = try groupContainer.decode(String.self, forKey: .photo_50)
+            let photo_100 = try groupContainer.decode(String.self, forKey: .photo_100)
+            let photo_200 = try groupContainer.decode(String.self, forKey: .photo_200)
+            
+            let photo = Photo(photo_50: photo_50, photo_100: photo_100, photo_200: photo_200)
+            let group = Group(id: id, isMember: isMemberBool, name: name, photo: photo, order: q)
+            
+            self.groups.append(group)
+        }
         
         let newsCount = news.count ?? 0
         for _ in 0..<newsCount {
@@ -132,43 +145,38 @@ class Feed: Decodable {
             let viewsContainer = try newsContainer.nestedContainer(keyedBy: ViewsCodingKeys.self, forKey: .views)
             let viewsCount = try viewsContainer.decode(Int.self, forKey: .count)
             
-            var attachments = try newsContainer.nestedUnkeyedContainer(forKey: .attachments)
+            let attachments = try? newsContainer.nestedUnkeyedContainer(forKey: .attachments)
+            print(text)
             
-            let attachmentsCount = attachments.count ?? 0
-            for _ in 0..<attachmentsCount {
-                let attachmentsContainer = try attachments.nestedContainer(keyedBy: AttachmentsCodingKeys.self)
-                
-                let type = try attachmentsContainer.decode(String.self, forKey: .type)
-                
-                if type != "photo" {
-                    let news = News(id: sourceID, text: text, date: date, photoURL: "", commentCount: commentsCount, likesCount: likesCount, isUserLikes: isUserLikesBool, repostsCount: repostsCount, viewsCount: viewsCount, owner: 0)
+            if let attachments = attachments {
+                var attachments = attachments
+                let attachmentsCount = attachments.count ?? 0
+                for _ in 0..<attachmentsCount {
+                    let attachmentsContainer = try attachments.nestedContainer(keyedBy: AttachmentsCodingKeys.self)
                     
-                    newsArray.append(news)
-                    break
-                }
-                
-                
-                let photoContainer = try attachmentsContainer.nestedContainer(keyedBy: PhotoCodingKeys.self, forKey: .photo)
-                
-                let ownerID = try photoContainer.decode(Int.self, forKey: .ownerID)
-                
-                var sizes = try photoContainer.nestedUnkeyedContainer(forKey: .sizes)
-                let sizesCount = sizes.count ?? 0
-                for z in 0..<sizesCount {
-                    let sizeContainer = try sizes.nestedContainer(keyedBy: SizesCodingKeys.self)
-                    let url = try sizeContainer.decode(String.self, forKey: .url)
+                    let type = try attachmentsContainer.decode(String.self, forKey: .type)
                     
-                    if z == sizesCount-1 {                        
-                        let news = News(id: sourceID, text: text, date: date, photoURL: url, commentCount: commentsCount, likesCount: likesCount, isUserLikes: isUserLikesBool, repostsCount: repostsCount, viewsCount: viewsCount, owner: ownerID)
+                    if type != "photo" {
+                        break
+                    }
+                    
+                    
+                    let photoContainer = try attachmentsContainer.nestedContainer(keyedBy: PhotoCodingKeys.self, forKey: .photo)
+                    var sizes = try photoContainer.nestedUnkeyedContainer(forKey: .sizes)
+                    let sizesCount = sizes.count ?? 0
+                    for z in 0..<sizesCount {
+                        let sizeContainer = try sizes.nestedContainer(keyedBy: SizesCodingKeys.self)
+                        let url = try sizeContainer.decode(String.self, forKey: .url)
                         
-                        newsArray.append(news)
+                        if z == sizesCount-1 {
+                            let news = News(sourceID: sourceID, text: text, date: date, photoURL: url, commentCount: commentsCount, likesCount: likesCount, isUserLikes: isUserLikesBool, repostsCount: repostsCount, viewsCount: viewsCount)
+                            
+                            newsArray.append(news)
 
+                        }
                     }
                 }
             }
-            
-           
-
         }
     }
 }

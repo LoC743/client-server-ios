@@ -12,7 +12,7 @@ class NewsTableViewController: UITableViewController {
     private let reuseIdentifier = "NewsTableViewCell"
     
     var newsArray: [News] = []
-    var feed: Feed!
+    var groups: [Group] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,11 +30,12 @@ class NewsTableViewController: UITableViewController {
     }
     
     private func loadNews() {
-        NetworkManager.shared.loadFeed(count: 3) { [weak self] (feedResponse) in
+        NetworkManager.shared.loadFeed(count: 45
+        ) { [weak self] (feedResponse) in
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 self.newsArray = feedResponse.newsArray
-                self.feed = feedResponse
+                self.groups = feedResponse.groups
                 self.tableView.reloadData()
             }
         }
@@ -53,7 +54,17 @@ class NewsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NewsTableViewCell
 
-        cell.setValues(item: newsArray[indexPath.item])
+        var groupToSet = Group()
+        let newsPost = newsArray[indexPath.item]
+        
+        for group in groups {
+            if group.id == newsPost.sourceID || -group.id == newsPost.sourceID {
+                groupToSet = group
+                break;
+            }
+        }
+        
+        cell.setValues(item: newsPost, group: groupToSet)
 
         return cell
     }
