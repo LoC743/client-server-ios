@@ -146,7 +146,6 @@ class Feed: Decodable {
             let viewsCount = try viewsContainer.decode(Int.self, forKey: .count)
             
             let attachments = try? newsContainer.nestedUnkeyedContainer(forKey: .attachments)
-            print(text)
             
             if let attachments = attachments {
                 var attachments = attachments

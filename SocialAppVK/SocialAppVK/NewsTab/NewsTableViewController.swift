@@ -26,12 +26,17 @@ class NewsTableViewController: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "To Top", style: .plain, target: self, action: #selector(topButtonTapped))
+        
         loadNews()
     }
     
+    @objc func topButtonTapped() {
+        tableView.setContentOffset(.zero, animated: true)
+    }
+    
     private func loadNews() {
-        NetworkManager.shared.loadFeed(count: 45
-        ) { [weak self] (feedResponse) in
+        NetworkManager.shared.loadFeed(count: 200) { [weak self] (feedResponse) in
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 self.newsArray = feedResponse.newsArray
