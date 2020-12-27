@@ -22,9 +22,9 @@ class DatabaseManager {
         }
     }
     
-    func saveUserData(groups: [User]) {
+    func saveUserData(users: [User]) {
         try? realm.write {
-            realm.add(groups)
+            realm.add(users)
         }
     }
     
@@ -36,16 +36,16 @@ class DatabaseManager {
     
     // MARK: - Loading data
     
-    func loadGroupData() -> [Group] {
-        return Array(realm.objects(Group.self).sorted(byKeyPath: "orderNumber"))
+    func loadGroupData() -> Results<Group> {
+        return realm.objects(Group.self).sorted(byKeyPath: "orderNumber")
     }
     
-    func loadUserData() -> [User] {
-        return Array(realm.objects(User.self))
+    func loadUserData() -> Results<User> {
+        return realm.objects(User.self)
     }
     
-    func loadImageDataBy(ownerID: Int) -> [Image] {
-        return Array(realm.objects(Image.self).filter("ownerID == %@", ownerID).sorted(byKeyPath: "date", ascending: false))
+    func loadImageDataBy(ownerID: Int) -> Results<Image> {
+        return realm.objects(Image.self).filter("ownerID == %@", ownerID).sorted(byKeyPath: "date", ascending: false)
     }
     
     // MARK: - Remove all data

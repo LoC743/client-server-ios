@@ -50,19 +50,10 @@ class GroupSearchTableViewController: UITableViewController, UISearchBarDelegate
         
         let group = groups[indexPath.row]
         
-        NetworkManager.shared.getPhotos(ownerID: "-\(group.id)", count: 30, offset: 0, type: .wall) { [weak self] imageList in
-            DispatchQueue.main.async {
-                guard let self = self,
-                      let imageList = imageList else { return }
-
-                vc.posts = imageList.images
-                vc.title = group.name
-                
-                self.navigationController?.pushViewController(vc, animated: true)
-            }
-        } failure: {
-            
-        }
+        vc.title = group.name
+        vc.getImages(group: group)
+        
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     // MARK: - SearchBar setup

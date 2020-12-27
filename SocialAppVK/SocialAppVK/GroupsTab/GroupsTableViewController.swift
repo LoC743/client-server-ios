@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RealmSwift
 
 class GroupsTableViewController: UITableViewController {
     
@@ -13,7 +14,8 @@ class GroupsTableViewController: UITableViewController {
         return LoadingView(frame: CGRect(x: view.frame.minX, y: view.frame.minY, width: view.frame.maxX, height: view.frame.maxY))
     }()
     
-    var userGroups: [Group] = []
+    var groupsData: Results<Group>!
+    private var groupToken: NotificationToken?
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -30,7 +32,7 @@ class GroupsTableViewController: UITableViewController {
         
         view.backgroundColor = Colors.palePurplePantone
         
-        checkLoadedData()
+        getGroupData()
     }
     
     private func setupLoadingView() {
@@ -38,29 +40,35 @@ class GroupsTableViewController: UITableViewController {
         loadingView.isHidden = true
     }
     
-    func checkLoadedData() {
-        let savedGroupData = DatabaseManager.shared.loadGroupData()
-        
-        // Show old data from DB
-        if !savedGroupData.isEmpty {
-            print("[Database]: Loading group data..")
-            self.userGroups = savedGroupData
-            self.tableView.reloadData()
-        }
+    func getGroupData() {
+        self.groupsData = DatabaseManager.shared.loadGroupData()
+        self.groupToken = groupsData.observe(on: DispatchQueue.main, { [weak self] (changes) in
+            guard let self = self else { return }
+            
+            switch changes {
+            case .update(_, deletions: let deletions, insertions: let insetions, modifications: let modifications):
+                self.tableView.beginUpdates()
+                self.tableView.insertRows(at: insetions.map { IndexPath(row: $0, section: 0) }, with: .automatic)
+                self.tableView.deleteRows(at: deletions.map { IndexPath(row: $0, section: 0) }, with: .automatic)
+                self.tableView.reloadRows(at: modifications.map { IndexPath(row: $0, section: 0) }, with: .automatic)
+                self.tableView.endUpdates()
+                break
+            case .initial:
+                self.tableView.reloadData()
+            case .error(let error):
+                print("Error in \(#function). Message: \(error.localizedDescription)")
+            }
+        })
         
         loadGroupList() // Load new data anyways
     }
     
     private func loadGroupList() {
-        print("[Network]: Loading group data..")
-        NetworkManager.shared.loadGroupsList(count: 0, offset: 0) { [weak self] groupsList in
+        NetworkManager.shared.loadGroupsList(count: 0, offset: 0) { groupsList in
             DispatchQueue.main.async {
-                guard let self = self,
-                      let groupsList = groupsList else { return }
+                guard let groupsList = groupsList else { return }
                 DatabaseManager.shared.deleteGroupData() // Removing all group data before loading new data from network
-                self.userGroups = groupsList.groups
                 DatabaseManager.shared.saveGroupData(groups: groupsList.groups) // Saving data from network to Realm
-                self.tableView.reloadData()
             }
         }
     }
@@ -72,7 +80,7 @@ class GroupsTableViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return userGroups.count
+        return groupsData.count
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -82,79 +90,29 @@ class GroupsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CustomTableViewCell", for: indexPath) as! CustomTableViewCell
         
-        cell.setValues(item: userGroups[indexPath.row])
+        cell.setValues(item: groupsData[indexPath.row])
 
         return cell
-    }
-    
-    private func getDatabaseData(groupID: Int) -> [Image]? {
-        let images = DatabaseManager.shared.loadImageDataBy(ownerID: groupID)
-        
-        guard images.isEmpty else {
-            print("[Database]: Returning Group Images..")
-            return images
-        }
-        
-        return nil
-    }
-    
-    private func loadImages(group: Group, network: @escaping (ImageList?) -> Void, database: @escaping (ImageList?) -> Void) {
-        print("[Network]: Loading Group Images..")
-        loadingView.isHidden = false
-        let groupID: Int = Int(-group.id)
-        NetworkManager.shared.getPhotos(ownerID: String(groupID), count: 30, offset: 0, type: .wall) { [weak self] imageList in
-            DispatchQueue.main.async {
-                guard let self = self,
-                      let imageList = imageList else { return }
-                
-                DatabaseManager.shared.saveImageData(images: imageList.images)
-                
-                self.loadingView.isHidden = true
-                network(imageList)
-            }
-        } failure: { [weak self] in
-            guard let self = self else { return }
-            self.loadingView.isHidden = true
-            
-            guard let imageData = self.getDatabaseData(groupID: groupID) else { return }
-            
-            database(ImageList(images: imageData))
-        }
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "GroupsCollectionViewController") as! GroupsCollectionViewController
         
-        let group = userGroups[indexPath.row]
+        let group = groupsData[indexPath.row]
         
         vc.title = group.name
+        vc.getImages(group: group)
         
-        loadImages(group: group) { [weak self] (imageList) in
-            DispatchQueue.main.async {
-                if let self = self,
-                   let imageList = imageList {
-                    vc.posts = imageList.images
-                    self.navigationController?.pushViewController(vc, animated: true)
-                }
-            }
-        } database: { [weak self] (imageList) in
-            DispatchQueue.main.async {
-                if let self = self,
-                   let imageList = imageList {
-                    vc.posts = imageList.images
-                    self.navigationController?.pushViewController(vc, animated: true)
-                }
-            }
-        }
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            
-//            let id = userGroups[indexPath.row].id
-//            Group.changeGroupAdded(by: id)
-            
-//            tableView.deleteRows(at: [indexPath], with: .fade)
+            let group = groupsData[indexPath.row]
+            let realm = try! Realm()
+            try? realm.write {
+                realm.delete(group)
+            }
         }
     }
     

@@ -6,27 +6,24 @@
 //
 
 import UIKit
+import RealmSwift
 
 class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
     
     @IBOutlet weak var searchBar: UISearchBar!
-    
-    lazy var loadingView: UIView = {
-        return LoadingView(frame: CGRect(x: view.frame.minX, y: view.frame.minY, width: view.frame.maxX, height: view.frame.maxY))
-    }()
-    
+
     var sections: [Character] = []             // Массив букв для выделения секций
     var userData: [Character: [User]] = [:]    // Словарь для получения массива пользователей по букве секции
     var searchData: [Character: [User]] = [:]  // Такой же как и userData, только при использовании UISearchBar
     var searchSections: [Character] = []       // Такой же как и sections, используется при UISearchBar
-    var friendList: [User] = []
+    
+    var friendsData: Results<User>!
+    var friendToken: NotificationToken?
     
     private let reuseIdentifier = "CustomTableViewCell"
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        setupLoadingView()
         
         searchBar.delegate = self
         
@@ -35,56 +32,50 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
         view.backgroundColor = Colors.palePurplePantone
         tableView.sectionIndexBackgroundColor = Colors.palePurplePantone
         
-        checkFriendListData()
+        getUserData()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-//        getUserData()
-//        resetSearchTableViewData()
-    }
-    
-    private func setupLoadingView() {
-        view.addSubview(loadingView)
-        loadingView.isHidden = true
-    }
-    
-    private func checkFriendListData() {
-        let friends = DatabaseManager.shared.loadUserData()
+    private func getUserData() {
+        self.friendsData = DatabaseManager.shared.loadUserData()
         
-        if !friends.isEmpty {
-            print("[Database]: Loading friend list..")
-            friendList = friends
-            reloadTableData()
-        }
+        resetTableData()
+        
+        self.friendToken = friendsData.observe(on: DispatchQueue.main, { [weak self] (changes) in
+            guard let self = self else { return }
+            
+            switch changes {
+            case .update:
+                self.tableView.reloadData()
+                break
+            case .initial:
+                self.tableView.reloadData()
+            case .error(let error):
+                print("Error in \(#function). Message: \(error.localizedDescription)")
+            }
+        })
         
         loadFriendList() // Load new data anyways
     }
     
     private func loadFriendList() {
-        print("[Network]: Loading friend list..")
-        NetworkManager.shared.loadFriendList(count: 0, offset: 0) { [weak self] friendList in
+        NetworkManager.shared.loadFriendList(count: 0, offset: 0) { friendList in
             DispatchQueue.main.async {
-                guard let self = self,
-                      let friendList = friendList else { return }
+                guard let friendList = friendList else { return }
                 DatabaseManager.shared.deleteUserData() // Removing all user data before loading new data from network
-                self.friendList = friendList.friends
-                DatabaseManager.shared.saveUserData(groups: friendList.friends) // Saving data from network to Realm
-                self.reloadTableData()
+                DatabaseManager.shared.saveUserData(users: friendList.friends) // Saving data from network to Realm
             }
         }
     }
     
-    private func reloadTableData() {
-        getUserData()
+    private func resetTableData() {
+        updateUserData()
         resetSearchTableViewData()
-        self.tableView.reloadData()
     }
     
-    private func getUserData() {
+    private func updateUserData() {
         userData = [:]
         var sectionSet: Set<Character> = []
-        for user in friendList {
+        for user in friendsData {
             if let letter = user.name.first {
                 sectionSet.insert(letter)
 
@@ -130,40 +121,6 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
         return 75.0
     }
     
-    private func getDatabaseData(userID: Int) -> [Image]? {
-        let images = DatabaseManager.shared.loadImageDataBy(ownerID: userID)
-        
-        guard images.isEmpty else {
-            print("[Database]: Returning User Images..")
-            return images
-        }
-        
-        return nil
-    }
-    
-    private func loadImages(user: User, network: @escaping (ImageList?) -> Void, database: @escaping (ImageList?) -> Void) {
-        print("[Network]: Loading User Images..")
-        loadingView.isHidden = false
-        NetworkManager.shared.getPhotos(ownerID: String(user.id), count: 30, offset: 0, type: .profile) { [weak self] imageList in
-            DispatchQueue.main.async {
-                guard let self = self,
-                      let imageList = imageList else { return }
-                
-                DatabaseManager.shared.saveImageData(images: imageList.images)
-                
-                network(imageList)
-                self.loadingView.isHidden = true
-            }
-        } failure: { [weak self] in
-            guard let self = self else { return }
-            self.loadingView.isHidden = true
-            
-            guard let imageData = self.getDatabaseData(userID: user.id) else { return }
-            
-            database(ImageList(images: imageData))
-        }
-    }
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(identifier: "FriendsCollectionViewController") as! FriendsCollectionViewController
         
@@ -171,26 +128,9 @@ class FriendsTableViewController: UITableViewController, UISearchBarDelegate {
         let user = searchData[sectionLetter]![indexPath.row]
         
         vc.title = user.name
+        vc.getImages(user: user)
         
-        loadImages(user: user) { [weak self] (imageList) in
-            DispatchQueue.main.async {
-                if  let self = self,
-                    let imageList = imageList {
-                    
-                    vc.posts = imageList.images
-                    self.navigationController?.pushViewController(vc, animated: true)
-                }
-            }
-        } database: { [weak self] (imageList) in
-            DispatchQueue.main.async {
-                if  let self = self,
-                    let imageList = imageList {
-                    
-                    vc.posts = imageList.images
-                    self.navigationController?.pushViewController(vc, animated: true)
-                }
-            }
-        }
+        self.navigationController?.pushViewController(vc, animated: true)
 
     }
     
