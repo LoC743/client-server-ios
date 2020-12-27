@@ -8,7 +8,7 @@
 | Хранение данных                                           | :white_check_mark: |
 | Realm                                                     | :white_check_mark: |
 | Realm Notifications                                       | :mag:              |
-| Backend - Firebase                                        | :x:                |
+| Backend - Firebase                                        | :mag:              |
 | App Store, встроенные покупки                             | :x:                |
 
 -   :x: - не начато

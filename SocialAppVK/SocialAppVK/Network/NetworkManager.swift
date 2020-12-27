@@ -26,6 +26,7 @@ class NetworkManager {
         case photos = "photos.get"
         case groups = "groups.get"
         case searchGroups = "groups.search"
+        case getCurrentUserProfile = "account.getProfileInfo"
     }
     
     @discardableResult
@@ -154,5 +155,30 @@ class NetworkManager {
         
         let data = try? Data(contentsOf: url)
         return data
+    }
+    
+    @discardableResult
+    func loadCurrentProfile(completion: @escaping (CurrentUser) -> Void) -> Request? {
+        guard let token = UserSession.instance.token else { return nil }
+        
+        let path = Paths.getCurrentUserProfile.rawValue
+        
+        let parameters: Parameters = [
+            "access_token": token,
+            "v": versionVKAPI
+        ]
+        
+        let url = baseURL + path
+        
+        return Session.custom.request(url, parameters: parameters).responseData { response in
+            guard let data = response.value,
+                  let currentUser = try? JSONDecoder().decode(CurrentUser.self, from: data)
+            else {
+                print("Failed to pase group JSON!")
+                return
+            }
+            
+            completion(currentUser)
+        }
     }
 }
