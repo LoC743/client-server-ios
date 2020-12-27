@@ -7,9 +7,9 @@
 | Mapping JSON                                              | :white_check_mark: |
 | Хранение данных                                           | :white_check_mark: |
 | Realm                                                     | :white_check_mark: |
-| Realm Notifications                                       | :mag:              |
-| Backend - Firebase                                        | :mag:              |
-| App Store, встроенные покупки                             | :x:                |
+| Realm Notifications                                       | :white_check_mark: |
+| Backend - Firebase                                        | :white_check_mark: |
+| App Store, встроенные покупки                             | :white_check_mark: |
 
 -   :x: - не начато
 -   :white_check_mark: - готово
