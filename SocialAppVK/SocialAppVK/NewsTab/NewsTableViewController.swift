@@ -11,8 +11,9 @@ class NewsTableViewController: UITableViewController {
     
     private let reuseIdentifier = "NewsTableViewCell"
     
-    var newsArray: [PostModel] = []
-
+    var newsArray: [News] = []
+    var groups: [Group] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -20,18 +21,29 @@ class NewsTableViewController: UITableViewController {
         
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 600
-        
-        getNews()
     }
     
-    private func getNews() {
-//        var news: [PostModel] = []
-//        for user in User.database {
-//            if user.isAdded {
-//                news += user.posts
-//            }
-//        }
-//        newsArray = news
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "To Top", style: .plain, target: self, action: #selector(topButtonTapped))
+        
+        loadNews()
+    }
+    
+    @objc func topButtonTapped() {
+        tableView.setContentOffset(.zero, animated: true)
+    }
+    
+    private func loadNews() {
+        NetworkManager.shared.loadFeed(count: 200) { [weak self] (feedResponse) in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                self.newsArray = feedResponse.newsArray
+                self.groups = feedResponse.groups
+                self.tableView.reloadData()
+            }
+        }
     }
 
     // MARK: - Table view data source
@@ -47,7 +59,17 @@ class NewsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: reuseIdentifier, for: indexPath) as! NewsTableViewCell
 
-        cell.setValues(item: newsArray[indexPath.item])
+        var groupToSet = Group()
+        let newsPost = newsArray[indexPath.item]
+        
+        for group in groups {
+            if group.id == newsPost.sourceID || -group.id == newsPost.sourceID {
+                groupToSet = group
+                break;
+            }
+        }
+        
+        cell.setValues(item: newsPost, group: groupToSet)
 
         return cell
     }

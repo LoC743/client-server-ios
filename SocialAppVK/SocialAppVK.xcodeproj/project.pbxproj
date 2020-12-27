@@ -14,6 +14,7 @@
 		8A184F8725332D8B004A002E /* GroupSearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A184F8625332D8B004A002E /* GroupSearchTableViewController.swift */; };
 		8A184F8D25334458004A002E /* PostCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A184F8B25334458004A002E /* PostCollectionViewCell.swift */; };
 		8A184F8E25334458004A002E /* PostCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8A184F8C25334458004A002E /* PostCollectionViewCell.xib */; };
+		8A1BCF81258A1CF9008DAD90 /* Feed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A1BCF80258A1CF9008DAD90 /* Feed.swift */; };
 		8A25FDBE25334F5400AF98F1 /* CustomAvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A25FDBD25334F5400AF98F1 /* CustomAvatarView.swift */; };
 		8A3E6DAF2525E50B00766A2E /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A3E6DAE2525E50B00766A2E /* TabBarController.swift */; };
 		8A4C2AB825418E3C00DE263F /* PhotoViewerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8A4C2AB725418E3C00DE263F /* PhotoViewerViewController.swift */; };
@@ -45,7 +46,6 @@
 		8AC50BED2567C7FB00BB808C /* WebLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC50BEC2567C7FB00BB808C /* WebLoginViewController.swift */; };
 		8AC50BFC256D0BFA00BB808C /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC50BFB256D0BFA00BB808C /* Photo.swift */; };
 		8AC50C03256D3C8E00BB808C /* Images.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC50C02256D3C8E00BB808C /* Images.swift */; };
-		8AC50C0B256DB8AD00BB808C /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AC50C0A256DB8AD00BB808C /* Post.swift */; };
 		8AF30355253D9D1D0085F4C8 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AF30354253D9D1D0085F4C8 /* LoadingView.swift */; };
 /* End PBXBuildFile section */
 
@@ -58,6 +58,7 @@
 		8A184F8625332D8B004A002E /* GroupSearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupSearchTableViewController.swift; sourceTree = "<group>"; };
 		8A184F8B25334458004A002E /* PostCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCollectionViewCell.swift; sourceTree = "<group>"; };
 		8A184F8C25334458004A002E /* PostCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PostCollectionViewCell.xib; sourceTree = "<group>"; };
+		8A1BCF80258A1CF9008DAD90 /* Feed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Feed.swift; sourceTree = "<group>"; };
 		8A25FDBD25334F5400AF98F1 /* CustomAvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAvatarView.swift; sourceTree = "<group>"; };
 		8A3E6DAE2525E50B00766A2E /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		8A4C2AB725418E3C00DE263F /* PhotoViewerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewerViewController.swift; sourceTree = "<group>"; };
@@ -91,7 +92,6 @@
 		8AC50BEC2567C7FB00BB808C /* WebLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebLoginViewController.swift; sourceTree = "<group>"; };
 		8AC50BFB256D0BFA00BB808C /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		8AC50C02256D3C8E00BB808C /* Images.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Images.swift; sourceTree = "<group>"; };
-		8AC50C0A256DB8AD00BB808C /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		8AF30354253D9D1D0085F4C8 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		BF773627850D382E61E58CE5 /* Pods_SocialAppVK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SocialAppVK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -196,10 +196,10 @@
 				8AA99CCD252B1ED800A05F86 /* User.swift */,
 				8AC50BFB256D0BFA00BB808C /* Photo.swift */,
 				8AA99CD0252B1EDE00A05F86 /* Group.swift */,
-				8AC50C0A256DB8AD00BB808C /* Post.swift */,
 				8AA99CDA252B2C1D00A05F86 /* Colors.swift */,
 				8AC50C02256D3C8E00BB808C /* Images.swift */,
 				8A90D18B25838224005703FC /* CurrentUser.swift */,
+				8A1BCF80258A1CF9008DAD90 /* Feed.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -392,8 +392,8 @@
 				8A9A175225223E94003E44BC /* LoginFormViewController.swift in Sources */,
 				8AA99CDB252B2C1D00A05F86 /* Colors.swift in Sources */,
 				8AC50BE82567C5C300BB808C /* CustomAlomafireSession.swift in Sources */,
+				8A1BCF81258A1CF9008DAD90 /* Feed.swift in Sources */,
 				8AC50BED2567C7FB00BB808C /* WebLoginViewController.swift in Sources */,
-				8AC50C0B256DB8AD00BB808C /* Post.swift in Sources */,
 				8A81F3C7254841F90093C4F7 /* PushAnimation.swift in Sources */,
 				8A81F3C3254841B80093C4F7 /* CustomInteractiveTransition.swift in Sources */,
 				8AB781BB2539C51A007AE4B2 /* NewsTableViewCell.swift in Sources */,

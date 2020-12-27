@@ -27,6 +27,7 @@ class NetworkManager {
         case groups = "groups.get"
         case searchGroups = "groups.search"
         case getCurrentUserProfile = "account.getProfileInfo"
+        case getFeed = "newsfeed.get"
     }
     
     @discardableResult
@@ -174,11 +175,38 @@ class NetworkManager {
             guard let data = response.value,
                   let currentUser = try? JSONDecoder().decode(CurrentUser.self, from: data)
             else {
-                print("Failed to pase group JSON!")
+                print("Failed to parse group JSON!")
                 return
             }
             
             completion(currentUser)
+        }
+    }
+    
+    @discardableResult
+    func loadFeed(count: Int, completion: @escaping (Feed) -> Void) -> Request? {
+        guard let token = UserSession.instance.token else { return nil }
+        
+        let path = Paths.getFeed.rawValue
+        
+        let parameters: Parameters = [
+            "count": count,
+            "filters": "post,photo",
+            "access_token": token,
+            "v": versionVKAPI
+        ]
+        
+        let url = baseURL + path
+        
+        return Session.custom.request(url, parameters: parameters).responseData { (response) in
+            guard let data = response.value,
+                  let feed = try? JSONDecoder().decode(Feed.self, from: data)
+            else {
+                print("Failed to parse feed JSON!")
+                return
+            }
+            
+            completion(feed)
         }
     }
 }
